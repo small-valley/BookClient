@@ -1,0 +1,63 @@
+<table class="table">
+    <tr>
+      <th>日付</th>
+      <th>書名</th>
+      <th>著者</th>
+      <th>出版社</th>
+      <th>分類</th>
+      <th>ページ数</th>
+      <th>出版年</th>
+      <th>おすすめ</th>
+    </tr>
+    <tr *ngFor="let b of books; let i = index" (click)="onClickTable(i)">
+      <td>{{b.date | date: 'y/MM/dd'}}</td>
+      <td>{{b.title}}</td>
+      <td>{{b.authorCd}}</td>
+      <td>{{b.publisherCd}}</td>
+      <td>{{b.classCd}}</td>
+      <td>{{b.pageCount}}</td>
+      <td>{{b.publishYear}}</td>
+      <td>{{b.recommendFlg}}</td>
+
+    </tr>
+</table>
+
+<p>
+  <input type="button" id="get" value="表示" (click)="onClickGet($event)">
+  <input type="button" id="post" value="登録" (click)="onClickPost($event)">
+  <input type="button" id="put" value="更新" (click)="onClickPut($event)">
+  <input type="button" id="delete" value="削除" (click)="onClickPost($event)">
+</p>
+
+<div>
+  <label for='date'>日付</label>
+  <input id='date' name='date' type="datetime" [(ngModel)]="bookItem.date" />
+</div>
+<div>
+  <label for='title'>書名</label>
+  <input id='title' name='title' type="text" [(ngModel)]="bookItem.title" />
+</div>
+<div>
+  <label for='author'>著者</label>
+  <input id='author' name='author' type="text" [(ngModel)]="bookItem.author" />
+</div>
+<div>
+  <label for='publisher'>出版社</label>
+  <input id='publisher' name='publisher' type="text" [(ngModel)]="bookItem.publisher" />
+</div>
+<div>
+  <label for='class'>分類</label>
+  <input id='class' name='class' type="text" [(ngModel)]="bookItem.class" />
+</div>
+<div>
+  <label for='page'>ページ数</label>
+  <input id='page' name='page' type="number" [(ngModel)]="bookItem.pageCount" />
+</div>
+<div>
+  <label for='publshYear'>出版年</label>
+  <input id='publshYear' name='publshYear' type="text" [(ngModel)]="bookItem.publishYear" />
+</div>
+<div>
+  <label for='reccomend'>おすすめ</label>
+  <input id='reccomend' name='reccomend' type="range" min="1" max="5" [(ngModel)]="bookItem.recommendFlg" />
+</div>
