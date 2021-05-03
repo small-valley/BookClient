@@ -11,7 +11,7 @@ export class BookItem {
     publishYear = '';
     pageCount: number = 0;
     recommendFlg: number = 0;
-  }
+}
 
 export class BookItemSearchKey {
   from: string | null = '';

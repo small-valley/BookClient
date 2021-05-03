@@ -28,15 +28,15 @@ export class HttpService {
     body: null
   };
 
-  public get<T>(params: any): Promise<T[]>{
+  public get<T>(params: any, path: string): Promise<T[]>{
     const _httpReqOptions: HttpReqOptions = {
-      url: environment.apiurl + '/book',
+      url: environment.apiurl + path,
       httpOptions: {
         params: params,
         observe: "response",
       },
     };
-    return this.http.get<T[]>(environment.apiurl + '/book', _httpReqOptions.httpOptions)
+    return this.http.get<T[]>(environment.apiurl + path, _httpReqOptions.httpOptions)
     .toPromise()
     .then((res) => {
       // response の型は any ではなく class で型を定義した方が良いが
@@ -58,8 +58,8 @@ export class HttpService {
    * @returns {Promise<any[]>} バックエンドからのレスポンス
    * @memberof HttpClientService
    */
-    public post<T>(body: any): Promise<T> {
-      return this.http.post<T>( environment.apiurl + '/book', body, this.httpOptions)
+    public post<T>(body: any, path: string): Promise<T> {
+      return this.http.post<T>( environment.apiurl + path, body, this.httpOptions)
       .toPromise()
       .then((res) => {
         const response: any = res;
@@ -68,8 +68,8 @@ export class HttpService {
       .catch(this.errorHandler);
     }
 
-    public put<T>(body: any): Promise<T> {
-      return this.http.put<T>( environment.apiurl + '/book', body, this.httpOptions)
+    public put<T>(body: any, path: string): Promise<T> {
+      return this.http.put<T>( environment.apiurl + path, body, this.httpOptions)
       .toPromise()
       .then((res) => {
         const response: any = res;
@@ -78,10 +78,10 @@ export class HttpService {
       .catch(this.errorHandler);
     }
 
-    public delete<T>(id: number): Promise<T>{
+    public delete<T>(id: number, path: string): Promise<T>{
       const params = new HttpParams().append('autonumber', id.toString());
       const options = { params: params };
-      return this.http.delete<T>( environment.apiurl + '/book', options)
+      return this.http.delete<T>( environment.apiurl + path, options)
       .toPromise()
       .then((res) => {
         // response の型は any ではなく class で型を定義した方が良いが

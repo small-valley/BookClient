@@ -32,7 +32,7 @@ export class BookComponent implements OnInit {
     ) { }
 
   ngOnInit(): void {
-    this.getBooksData();
+    //this.getBooksData();
   }
 
   onClickGet($event: any): void{
@@ -40,7 +40,7 @@ export class BookComponent implements OnInit {
   }
 
   onClickPost($event: any): void{
-    this.httpService.post<HttpResponseData<number>>(this.bookItem)
+    this.httpService.post<HttpResponseData<number>>(this.bookItem, '/book')
     .then(
       (response) => {
         this.param = response;
@@ -55,7 +55,7 @@ export class BookComponent implements OnInit {
   }
 
   onClickPut($event: any): void{
-    this.httpService.put<HttpResponseData<number>>(this.bookItem)
+    this.httpService.put<HttpResponseData<number>>(this.bookItem, '/book')
     .then(
       (response) => {
         this.param = response;
@@ -70,7 +70,7 @@ export class BookComponent implements OnInit {
   }
 
   onClickDelete($event: any): void{
-    this.httpService.delete<HttpResponseData<number>>(this.bookItem.autonumber)
+    this.httpService.delete<HttpResponseData<number>>(this.bookItem.autonumber, '/book')
     .then(
       (response) => {
         this.param = response;
@@ -101,7 +101,7 @@ export class BookComponent implements OnInit {
   }
 
   getBooksData(): void{
-    this.httpService.get<HttpResponseData<BookItem>>(this.bookItemSearchKey)
+    this.httpService.get<HttpResponseData<BookItem>>(this.bookItemSearchKey, '/book')
     .then(
       (response) => {
         this.param = response;

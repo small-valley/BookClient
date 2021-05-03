@@ -1,1 +1,18 @@
-<p>author works!</p>
+<table mat-table #table [dataSource]="dataSource" class="mat-elevation-z8">
+  <!-- Position Column -->
+  <ng-container matColumnDef="AuthorCd">
+    <th mat-header-cell *matHeaderCellDef> Cd </th>
+    <td mat-cell *matCellDef="let element"> {{element.authorCd}} </td>
+  </ng-container>
+
+  <!-- Name Column -->
+  <ng-container matColumnDef="AuthorName">
+    <th mat-header-cell *matHeaderCellDef> Name </th>
+    <td mat-cell *matCellDef="let element"> {{element.authorName}} </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+
+<input type="button" id="get" value="表示" (click)="onClickGet($event)">
