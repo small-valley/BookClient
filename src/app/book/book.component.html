@@ -10,11 +10,11 @@
       <th>おすすめ</th>
     </tr>
     <tr *ngFor="let b of books; let i = index" (click)="onClickTable(i)">
-      <td>{{b.date | date: 'y/MM/dd'}}</td>
+      <td>{{b.dateTime | date: 'y/MM/dd'}}</td>
       <td>{{b.title}}</td>
-      <td>{{b.authorCd}}</td>
-      <td>{{b.publisherCd}}</td>
-      <td>{{b.classCd}}</td>
+      <td>{{b.author}}</td>
+      <td>{{b.publisher}}</td>
+      <td>{{b.class}}</td>
       <td>{{b.pageCount}}</td>
       <td>{{b.publishYear}}</td>
       <td>{{b.recommendFlg}}</td>
@@ -22,16 +22,49 @@
     </tr>
 </table>
 
+<div>
+  <label for='from'>日付From</label>
+  <input id='from' name='from' type="datetime" [(ngModel)]="bookItemSearchKey.from" />
+</div>
+<div>
+  <label for='to'>日付To</label>
+  <input id='to' name='to' type="datetime" [(ngModel)]="bookItemSearchKey.to" />
+</div>
+<div>
+  <label for='title'>書名</label>
+  <input id='titleSearch' name='titleSearch' type="text" [(ngModel)]="bookItemSearchKey.title" />
+</div>
+<div>
+  <label for='author'>著者</label>
+  <input id='authorSearch' name='authorSearch' type="text" [(ngModel)]="bookItemSearchKey.author" />
+</div>
+<div>
+  <label for='publisher'>出版社</label>
+  <input id='publisherSearch' name='publisherSearch' type="text" [(ngModel)]="bookItemSearchKey.publisher" />
+</div>
+<div>
+  <label for='class'>分類</label>
+  <input id='classSearch' name='classSearch' type="text" [(ngModel)]="bookItemSearchKey.class" />
+</div>
+<div>
+  <label for='publshYear'>出版年</label>
+  <input id='publshYearSearch' name='publshYearSearch' type="text" [(ngModel)]="bookItemSearchKey.publishYear" />
+</div>
+<div>
+  <label for='reccomend'>おすすめ</label>
+  <input id='reccomendSearch' name='reccomendSearch' type="range" min="0" max="9" [(ngModel)]="bookItemSearchKey.recommendFlg" />
+</div>
+
 <p>
   <input type="button" id="get" value="表示" (click)="onClickGet($event)">
   <input type="button" id="post" value="登録" (click)="onClickPost($event)">
   <input type="button" id="put" value="更新" (click)="onClickPut($event)">
-  <input type="button" id="delete" value="削除" (click)="onClickPost($event)">
+  <input type="button" id="delete" value="削除" (click)="onClickDelete($event)">
 </p>
 
 <div>
   <label for='date'>日付</label>
-  <input id='date' name='date' type="datetime" [(ngModel)]="bookItem.date" />
+  <input id='date' name='date' type="datetime" [(ngModel)]="bookItem.dateTime" />
 </div>
 <div>
   <label for='title'>書名</label>
@@ -59,5 +92,5 @@
 </div>
 <div>
   <label for='reccomend'>おすすめ</label>
-  <input id='reccomend' name='reccomend' type="range" min="1" max="5" [(ngModel)]="bookItem.recommendFlg" />
+  <input id='reccomend' name='reccomend' type="range" min="0" max="9" [(ngModel)]="bookItem.recommendFlg" />
 </div>

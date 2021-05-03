@@ -1,18 +1,6 @@
-// export class BookItem {
-//     autonumber = 0;
-//     dateTime: Date | string | null = null;
-//     title = '';
-//     author = '';
-//     publisher = '';
-//     class = '';
-//     publishYear = '';
-//     pageCount: number = 0;
-//     recommendFlg: number = 0;
-//   }
-
-  export class Book {
+export class BookItem {
     autonumber = 0;
-    date: Date | string | null = null;
+    dateTime: Date | string | null = null;
     title = '';
     authorCd = 0;
     author = '';
@@ -21,7 +9,17 @@
     classCd = 0;
     class = '';
     publishYear = '';
-    pageCount = 0;
+    pageCount: number = 0;
     recommendFlg: number = 0;
-    deleteFlg = '';
   }
+
+export class BookItemSearchKey {
+  from: string | null = '';
+  to: string | null = '';
+  title: string = '';
+  author: string = '';
+  publisher: string = '';
+  class: string = '';
+  publishYear: string = '';
+  recommendFlg: number = 0;
+}

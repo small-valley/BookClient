@@ -7,12 +7,16 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BookComponent } from './book/book.component';
 import { AngularComponent } from './angular/angular.component';
+import { MenuBarComponent } from './menu-bar/menu-bar.component';
+import { AuthorComponent } from './author/author.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     BookComponent,
     AngularComponent,
+    MenuBarComponent,
+    AuthorComponent,
   ],
   imports: [
     BrowserModule,

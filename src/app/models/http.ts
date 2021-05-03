@@ -26,7 +26,8 @@ export class HttpResponseData<T> {
   data: T | null = null;
   errMessages: string[] | null = null;
   errObj: any | null = null;
-  body?: ResponseData<T> | null = null;
+  //body?: ResponseData<T> | null = null;
+  body?: T | null = null;
   headers?: any;
 
   constructor() {}

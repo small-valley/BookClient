@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpReqOptions } from '../models/http';
 
 import { HttpService } from '../services/http.service';
 import { NewHttpService } from '../services/http.service.new';
-import { Book } from '../store/book.store';
-import { environment } from '../../environments/environment';
+import { BookItem, BookItemSearchKey } from '../store/book.store';
+import { HttpResponseData } from '../models/http';
 
 @Component({
   selector: 'app-book',
@@ -13,11 +12,13 @@ import { environment } from '../../environments/environment';
 })
 export class BookComponent implements OnInit {
 
-  books: Book[] = [];
+  books: BookItem[] = [];
 
-  bookItem = new Book();
+  bookItemSearchKey = new BookItemSearchKey();
 
-  public param: any = {};
+  bookItem = new BookItem();
+
+  public param: any;
 
   public messageInfo: any = {
     id: null,
@@ -31,21 +32,15 @@ export class BookComponent implements OnInit {
     ) { }
 
   ngOnInit(): void {
-    this.httpService.get()
-    .then(
-      (response) => {
-        this.param = response;
-        this.messageInfoList = this.param.messages;
-      }
-    )
-    .catch(
-      (error) => console.log(error)
-    );
-    this.books = this.param;
+    this.getBooksData();
   }
 
   onClickGet($event: any): void{
-    this.httpService.get()
+    this.getBooksData();
+  }
+
+  onClickPost($event: any): void{
+    this.httpService.post<HttpResponseData<number>>(this.bookItem)
     .then(
       (response) => {
         this.param = response;
@@ -55,11 +50,12 @@ export class BookComponent implements OnInit {
     .catch(
       (error) => console.log(error)
     );
-    this.books = this.param;
+    //window.alert(this.param.body);
+    this.getBooksData();
   }
 
-  onClickPost($event: any): void{
-    this.httpService.post<Book>(this.bookItem)
+  onClickPut($event: any): void{
+    this.httpService.put<HttpResponseData<number>>(this.bookItem)
     .then(
       (response) => {
         this.param = response;
@@ -70,11 +66,11 @@ export class BookComponent implements OnInit {
       (error) => console.log(error)
     );
     //window.alert(this.messageInfoList);
-    //this.login();
+    this.getBooksData();
   }
 
-  onClickPut($event: any): void{
-    this.httpService.put<Book>(this.bookItem)
+  onClickDelete($event: any): void{
+    this.httpService.delete<HttpResponseData<number>>(this.bookItem.autonumber)
     .then(
       (response) => {
         this.param = response;
@@ -84,24 +80,13 @@ export class BookComponent implements OnInit {
     .catch(
       (error) => console.log(error)
     );
-  }
-
-  login() {
-    const httpConfig: HttpReqOptions = {
-      url: environment.apiurl + "/api/book",
-      body: {
-        data: this.bookItem
-      },
-      httpOptions: {
-        observe: "response",
-      },
-    };
-    return this.NewHttpService.post<Book>(httpConfig);
+    //window.alert(this.messageInfoList);
+    this.getBooksData();
   }
 
   onClickTable(i: number): void{
     this.bookItem.autonumber = this.books[i].autonumber;
-    this.bookItem.date = this.books[i].date;
+    this.bookItem.dateTime = this.books[i].dateTime;
     this.bookItem.title = this.books[i].title;
     this.bookItem.authorCd = this.books[i].authorCd;
     this.bookItem.author = this.books[i].author;
@@ -113,5 +98,20 @@ export class BookComponent implements OnInit {
     this.bookItem.publishYear = this.books[i].publishYear;
     this.bookItem.recommendFlg = this.books[i].recommendFlg;
     //alert(this.books[i].autonumber);
+  }
+
+  getBooksData(): void{
+    this.httpService.get<HttpResponseData<BookItem>>(this.bookItemSearchKey)
+    .then(
+      (response) => {
+        this.param = response;
+        this.messageInfoList = this.param.messages;
+        //console.log(response);
+      }
+    )
+    .catch(
+      (error) => console.log(error)
+    );
+    this.books = this.param.body;
   }
 }
