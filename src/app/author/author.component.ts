@@ -4,25 +4,6 @@ import { HttpService } from '../services/http.service';
 import { AuthorItem } from '../store/author.store';
 import { HttpResponseData } from '../models/http';
 
-export interface PeriodicElement {
-  authorCd: number;
-  authorName: string;
-}
-
-const ELEMENT_DATA: PeriodicElement[] = [
-  {authorCd: 1, authorName: 'Hydrogen'},
-  {authorCd: 2, authorName: 'Helium'},
-  {authorCd: 3, authorName: 'Lithium'},
-  {authorCd: 4, authorName: 'Beryllium'},
-  {authorCd: 5, authorName: 'Boron'},
-  {authorCd: 6, authorName: 'Carbon'},
-  {authorCd: 7, authorName: 'Nitrogen'},
-  {authorCd: 8, authorName: 'Oxygen'},
-  {authorCd: 9, authorName: 'Fluorine'},
-  {authorCd: 10, authorName: 'Neon'},
-];
-
-
 @Component({
   selector: 'app-author',
   templateUrl: './author.component.html',
@@ -41,14 +22,11 @@ export class AuthorComponent implements OnInit {
 
   constructor(private httpService: HttpService) { }
 
-  displayedColumns: string[] = ['AuthorCd', 'AuthorName'];
+  displayedColumns: string[] = ['AuthorName', 'Count'];
   dataSource: any;
 
   ngOnInit(): void {
-  }
-
-  ngAfterViewInit(): void{
-    //this.getAuthorsData();
+    this.getAuthorsData();
   }
 
   onClickGet($event: any): void{
@@ -60,6 +38,7 @@ export class AuthorComponent implements OnInit {
     .then(
       (response) => {
         this.param = response;
+        this.dataSource = this.param.body;
         this.messageInfoList = this.param.messages;
         console.log(this.param);
       }
@@ -67,6 +46,5 @@ export class AuthorComponent implements OnInit {
     .catch(
       (error) => console.log(error)
     );
-    this.dataSource = this.param.body;
   }
 }

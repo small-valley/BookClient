@@ -1,4 +1,19 @@
-export class BookItem {
+export interface IBookItem{
+  autonumber: number, 
+  dateTime: Date | string | null, 
+  title: string,
+  authorCd: number,
+  author: string,
+  publisherCd: number,
+  publisher: string,
+  classCd: number,
+  class: string,
+  publishYear: string,
+  pageCount: number,
+  recommendFlg: number | string
+}
+
+export class BookItem implements IBookItem {
     autonumber = 0;
     dateTime: Date | string | null = null;
     title = '';
@@ -9,8 +24,51 @@ export class BookItem {
     classCd = 0;
     class = '';
     publishYear = '';
-    pageCount: number = 0;
-    recommendFlg: number = 0;
+    pageCount = 0;
+    recommendFlg: number | string = 0;
+}
+
+export class BookItemCsv implements IBookItem {
+
+  constructor(autonumber: number, 
+    dateTime: Date | string | null, 
+    title: string,
+    authorCd: number,
+    author: string,
+    publisherCd: number,
+    publisher: string,
+    classCd: number,
+    className: string,
+    publishYear: string,
+    pageCount: number,
+    recommendFlg: number | string
+    ){
+    this.autonumber = autonumber;
+    this.dateTime = dateTime;
+    this.title = title;
+    this.authorCd = authorCd;
+    this.author = author;
+    this.publisherCd = publisherCd;
+    this.publisher = publisher;
+    this.classCd = classCd;
+    this.class = className;
+    this.publishYear = publishYear;
+    this.pageCount = pageCount;
+    this.recommendFlg = recommendFlg;
+  }
+
+    autonumber: number;
+    dateTime: Date | string | null;
+    title: string;
+    authorCd: number;
+    author: string;
+    publisherCd: number;
+    publisher: string;
+    classCd: number;
+    class: string;
+    publishYear: string;
+    pageCount: number;
+    recommendFlg: number | string;
 }
 
 export class BookItemSearchKey {

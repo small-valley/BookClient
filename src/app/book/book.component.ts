@@ -1,22 +1,30 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 
 import { HttpService } from '../services/http.service';
 import { NewHttpService } from '../services/http.service.new';
-import { BookItem, BookItemSearchKey } from '../store/book.store';
+import { BookItemCsv, BookItem, BookItemSearchKey } from '../store/book.store';
 import { HttpResponseData } from '../models/http';
+import { RightBarComponent } from '../right-bar/right-bar.component';
 
 @Component({
   selector: 'app-book',
   templateUrl: './book.component.html',
   styleUrls: ['./book.component.css']
 })
+
 export class BookComponent implements OnInit {
+
+  @ViewChild(RightBarComponent)
 
   books: BookItem[] = [];
 
   bookItemSearchKey = new BookItemSearchKey();
 
+  bookItems: BookItem[] = [];
+
   bookItem = new BookItem();
+
+  displayedColumns: string[] = ['DateTime', 'Title', 'Author', 'Publisher', 'Class', 'PageCount', 'PublishYear', 'RecommendFlg'];
 
   public param: any;
 
@@ -27,12 +35,18 @@ export class BookComponent implements OnInit {
 
   public messageInfoList: any = [this.messageInfo];
 
+  public qrResultString: string = '';
+
   constructor(private httpService: HttpService
     ,private NewHttpService: NewHttpService
     ) { }
 
   ngOnInit(): void {
-    //this.getBooksData();
+    this.getBooksData();
+  }
+
+  getChildComponent(child: RightBarComponent): BookItemSearchKey{
+    return child.bookItemSearchKey
   }
 
   onClickGet($event: any): void{
@@ -40,22 +54,14 @@ export class BookComponent implements OnInit {
   }
 
   onClickPost($event: any): void{
-    this.httpService.post<HttpResponseData<number>>(this.bookItem, '/book')
-    .then(
-      (response) => {
-        this.param = response;
-        this.messageInfoList = this.param.messages;
-      }
-    )
-    .catch(
-      (error) => console.log(error)
-    );
-    //window.alert(this.param.body);
+    this.bookItems[0] = this.bookItem;
+    this.putBooksDate(this.bookItems);
     this.getBooksData();
   }
 
   onClickPut($event: any): void{
-    this.httpService.put<HttpResponseData<number>>(this.bookItem, '/book')
+    this.bookItems[0] = this.bookItem;
+    this.httpService.put<HttpResponseData<number>>(this.bookItems, '/book')
     .then(
       (response) => {
         this.param = response;
@@ -105,6 +111,7 @@ export class BookComponent implements OnInit {
     .then(
       (response) => {
         this.param = response;
+        this.books = this.param.body;
         this.messageInfoList = this.param.messages;
         //console.log(response);
       }
@@ -112,6 +119,75 @@ export class BookComponent implements OnInit {
     .catch(
       (error) => console.log(error)
     );
-    this.books = this.param.body;
+    //this.books = this.param.body;
+  }
+
+  putBooksDate(data: any): void{
+    this.httpService.post<HttpResponseData<number>>(data, '/book')
+    .then(
+      (response) => {
+        this.param = response;
+        this.messageInfoList = this.param.messages;
+      }
+    )
+    .catch(
+      (error) => console.log(error)
+    );
+    //window.alert(this.param.body);
+  }
+
+  onClickCsvDataPost($event: any) {
+    const file = $event.target.files[0];
+    this.fileToText(file)
+      .then(text => {
+        console.log(text);
+        this.parseCsv(text);
+      })
+      .catch(err => console.log(err));
+    //this.uploadListener(file);
+  }
+
+  fileToText(file: any): Promise<string> {
+    const reader = new FileReader();
+    reader.readAsText(file);
+    return new Promise((resolve, reject) => {
+      reader.onload = () => {
+        resolve(reader.result?.toString()!);
+      };
+      reader.onerror = () => {
+        reject(reader.error);
+      };
+    });
+  }
+
+  public bookItemArray: BookItem[] = [];
+
+  parseCsv(data: string): void{
+    this.bookItemArray = [];
+    let csvToRowArray = data.split("\n");
+    for (let index = 1; index < csvToRowArray.length; index++) {
+      let row = csvToRowArray[index].split(",");
+      if(row[0] == '') continue;
+      this.bookItemArray.push(
+        new BookItemCsv(0,
+          row[0],
+          row[1],
+          0,
+          row[2],
+          0,
+          row[3],
+          0,
+          row[4],
+          row[5],
+          parseInt( row[6], 10),
+          row[7],
+        ));
+    }
+    console.log(this.bookItemArray);
+    this.putBooksDate(this.bookItemArray);
+   }
+
+   onCodeResult(resultString: string) {
+    this.qrResultString = resultString;
   }
 }
