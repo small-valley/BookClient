@@ -123,9 +123,11 @@
 <!-- テキストファイルを選択するinput -->
 <input type="file" (change)="onClickCsvDataPost($event)">
 
-<zxing-scanner (scanSuccess)="onCodeResult($event)"></zxing-scanner>
+<!-- QRコード読み取り
+<zxing-scanner [formats]="allowedFormats" (scanSuccess)="onCodeResult($event)"></zxing-scanner>
 
 <p>{{qrResultString}}</p>
+-->
 
 </div>
 

@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { BarcodeFormat } from '@zxing/library';
 
 import { HttpService } from '../services/http.service';
 import { NewHttpService } from '../services/http.service.new';
@@ -34,6 +35,20 @@ export class BookComponent implements OnInit {
   };
 
   public messageInfoList: any = [this.messageInfo];
+
+  public allowedFormats = [ 
+    BarcodeFormat.QR_CODE, 
+    BarcodeFormat.EAN_13, 
+    BarcodeFormat.CODE_128,
+    BarcodeFormat.CODE_39,
+    BarcodeFormat.EAN_8,
+    BarcodeFormat.UPC_A,
+    BarcodeFormat.UPC_E,
+    BarcodeFormat.UPC_EAN_EXTENSION,
+    BarcodeFormat.ITF,
+    BarcodeFormat.RSS_14,
+    BarcodeFormat.MAXICODE,
+  ];
 
   public qrResultString: string = '';
 
@@ -169,18 +184,19 @@ export class BookComponent implements OnInit {
       let row = csvToRowArray[index].split(",");
       if(row[0] == '') continue;
       this.bookItemArray.push(
-        new BookItemCsv(0,
-          row[0],
-          row[1],
-          0,
-          row[2],
-          0,
-          row[3],
-          0,
-          row[4],
-          row[5],
-          parseInt( row[6], 10),
-          row[7],
+        new BookItemCsv(
+          0, //autonumber
+          new Date(row[0].toString()), //datetime
+          row[1], //title
+          0, //authorcd
+          row[2], //author
+          0, //publishercd
+          row[3], //publisher
+          0, //classcd
+          row[6], //classname
+          row[4], //publishyear
+          parseInt(row[5] ?? 0, 10), //pagecount
+          row[7], //recommendflg
         ));
     }
     console.log(this.bookItemArray);

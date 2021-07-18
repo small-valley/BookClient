@@ -31,7 +31,7 @@ export class BookItem implements IBookItem {
 export class BookItemCsv implements IBookItem {
 
   constructor(autonumber: number, 
-    dateTime: Date | string | null, 
+    dateTime: Date, 
     title: string,
     authorCd: number,
     author: string,
@@ -41,7 +41,7 @@ export class BookItemCsv implements IBookItem {
     className: string,
     publishYear: string,
     pageCount: number,
-    recommendFlg: number | string
+    recommendFlg: string
     ){
     this.autonumber = autonumber;
     this.dateTime = dateTime;
@@ -58,7 +58,7 @@ export class BookItemCsv implements IBookItem {
   }
 
     autonumber: number;
-    dateTime: Date | string | null;
+    dateTime: Date;
     title: string;
     authorCd: number;
     author: string;
@@ -68,7 +68,7 @@ export class BookItemCsv implements IBookItem {
     class: string;
     publishYear: string;
     pageCount: number;
-    recommendFlg: number | string;
+    recommendFlg: string;
 }
 
 export class BookItemSearchKey {
