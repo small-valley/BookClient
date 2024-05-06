@@ -4,6 +4,7 @@ import { HttpClientModule } from "@angular/common/http";
 import { FormsModule } from "@angular/forms";
 import { MatExpansionModule } from "@angular/material/expansion";
 import { MatIconModule } from "@angular/material/icon";
+import { MatInputModule } from "@angular/material/input";
 import { MatMenuModule } from "@angular/material/menu";
 import { MatPaginatorModule } from "@angular/material/paginator";
 import { MatSidenavModule } from "@angular/material/sidenav";
@@ -42,6 +43,7 @@ import { SearchBarComponent } from "./parts/search-bar/search-bar.component";
     ZXingScannerModule,
     MatIconModule,
     MatTableModule,
+    MatInputModule,
     MatToolbarModule,
     MatMenuModule,
     MatExpansionModule,

@@ -1,4 +1,4 @@
-.wrapper {
+/* .wrapper {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
   grid-template-rows: 100px 100px;
@@ -18,7 +18,7 @@
 .box3 {
   grid-column: 1 / 5;
   grid-row: 6;
-}
+} */
 
 table {
   width: 100%;
@@ -27,4 +27,14 @@ table {
 button {
   background-color: transparent;
   border: none;
+}
+
+td input {
+  width: 100%;
+  padding: 4px;
+  box-sizing: border-box;
+}
+
+.column-button td.mat-cell {
+  width: 50px;
 }

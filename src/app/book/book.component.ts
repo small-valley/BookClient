@@ -14,17 +14,17 @@ import { BookItem, BookItemSearchKey, IBookItem } from "../stores/book.store";
 })
 export class BookComponent implements OnInit {
   @ViewChild(RightBarComponent)
-  books: IBookItem[] = [];
+  protected books: IBookItem[] = [];
 
-  dataSource = new MatTableDataSource<IBookItem>(this.books);
+  protected dataSource = new MatTableDataSource<IBookItem>(this.books);
 
-  bookItemSearchKey = new BookItemSearchKey();
+  protected bookItemSearchKey = new BookItemSearchKey();
 
-  bookItems: IBookItem[] = [];
+  protected bookItems: IBookItem[] = [];
 
-  bookItem = new BookItem();
+  protected bookItem = new BookItem();
 
-  columns = [
+  protected columns = [
     {
       columnDef: "date",
       header: "Date",
@@ -61,26 +61,35 @@ export class BookComponent implements OnInit {
       cell: (element: IBookItem) => `${element.isRecommend}`,
     },
     {
+      columnDef: "edit",
+      header: "",
+      cell: () => "",
+    },
+    {
       columnDef: "delete",
       header: "",
       cell: () => "",
     },
   ];
 
-  displayedColumns = this.columns.map((c) => c.columnDef);
+  protected displayedColumns = this.columns.map((c) => c.columnDef);
 
-  public messageInfo: any = {
+  protected messageInfo: any = {
     id: null,
     message: null,
   };
 
-  public messageInfoList: any = [this.messageInfo];
+  protected messageInfoList: any = [this.messageInfo];
 
-  public qrResultString: string = "";
+  protected qrResultString: string = "";
+
+  protected editingRowIndex: number | null = null;
 
   constructor(private httpService: HttpService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.getBooksData();
+  }
 
   getChildComponent(child: RightBarComponent): BookItemSearchKey {
     return child.bookItemSearchKey;
@@ -109,6 +118,8 @@ export class BookComponent implements OnInit {
       (error) => console.log(error)
     );
     //window.alert(this.messageInfoList);
+    // Reset the edit state
+    this.editingRowIndex = null;
     this.getBooksData();
   }
 
@@ -146,6 +157,21 @@ export class BookComponent implements OnInit {
     this.bookItem.publishYear = this.dataSource.data[i].publishYear;
     this.bookItem.isRecommend = this.dataSource.data[i].isRecommend;
     //alert(this.dataSource.data[i].autonumber);
+  }
+
+  /**
+   * Toggle the editing state for a row
+   * @param rowIndex The index of the row to edit
+   */
+  onClickEdit(rowIndex: number): void {
+    this.editingRowIndex = rowIndex;
+  }
+
+  /**
+   * Toggle the editing state for a row
+   */
+  onClickAbortEdit(): void {
+    this.editingRowIndex = null;
   }
 
   getBooksData(): void {
