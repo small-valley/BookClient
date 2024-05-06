@@ -26,44 +26,44 @@ export class BookComponent implements OnInit {
 
   columns = [
     {
-      columnDef: "id",
-      header: "No",
-      cell: (element: IBookItem) => `${element.id}`,
-    },
-    {
       columnDef: "date",
-      header: "日付",
+      header: "Date",
       cell: (element: IBookItem) => `${element.date}`,
     },
     {
       columnDef: "title",
-      header: "タイトル",
+      header: "Title",
       cell: (element: IBookItem) => `${element.title}`,
     },
     {
       columnDef: "author",
-      header: "著者",
+      header: "Author",
       cell: (element: IBookItem) => `${element.author}`,
     },
     {
       columnDef: "publisher",
-      header: "出版社",
+      header: "Publisher",
       cell: (element: IBookItem) => `${element.publisher}`,
     },
     {
       columnDef: "class",
-      header: "分類",
+      header: "Class",
       cell: (element: IBookItem) => `${element.class}`,
     },
     {
       columnDef: "pageCount",
-      header: "ページ数",
+      header: "Page",
       cell: (element: IBookItem) => `${element.pageCount}`,
     },
     {
       columnDef: "isRecommend",
-      header: "おすすめ",
+      header: "Recommend",
       cell: (element: IBookItem) => `${element.isRecommend}`,
+    },
+    {
+      columnDef: "delete",
+      header: "",
+      cell: () => "",
     },
   ];
 
@@ -117,7 +117,7 @@ export class BookComponent implements OnInit {
       url: environment.apiurl + "/book",
       httpOptions: {
         params: {
-          id: this.bookItem.id,
+          id: $event.id,
         },
       },
     };

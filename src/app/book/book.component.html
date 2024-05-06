@@ -10,6 +10,13 @@
         </th>
         <td mat-cell *matCellDef="let row">
           {{ column.cell(row) }}
+          <button
+            mat-icon-button
+            *ngIf="column.columnDef === 'delete'"
+            (click)="onClickDelete(row)"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
         </td>
       </ng-container>
 
