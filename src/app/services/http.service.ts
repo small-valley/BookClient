@@ -1,24 +1,25 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { HttpReqOptions, HttpResponseData } from '../models/http';
+import { HttpClient } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import { Observable } from "rxjs";
+import { map } from "rxjs/operators";
+import { HttpReqOptions, HttpResponseData } from "../models/http";
 
 @Injectable({
   providedIn: "root",
 })
-
 export class HttpService {
   constructor(private http: HttpClient) {}
 
-  get<T>(config: HttpReqOptions): Observable<HttpResponseData<T>> {
-    const ret = new HttpResponseData<T>();
-    ret.isOnline = window.navigator.onLine;
-    return this.http.get<T>(config.url, config.httpOptions).pipe(
-      map((res) => {
-        return this.CreateSuccessResult<T>(ret, res);
-      })
-    );
+  get<T>(config: HttpReqOptions): Observable<T> {
+    // const ret = new HttpResponseData<T>();
+    // ret.isOnline = window.navigator.onLine;
+    return this.http.get<T>(config.url, config.httpOptions);
+    // .pipe(
+    //   map((res) => {
+    //     console.log(ret, res);
+    //     return this.CreateSuccessResult<T>(ret, res);
+    //   })
+    // );
   }
 
   post<T>(config: HttpReqOptions): Observable<HttpResponseData<T>> {

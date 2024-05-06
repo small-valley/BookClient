@@ -1,32 +1,69 @@
 <div>
-    <label class='lb'>日付From</label>
-      <input id='from' name='from' type="datetime" [(ngModel)]="bookItemSearchKey.from">
-  </div>
-  <div>
-    <label class='lb'>日付To</label>
-    <input id='to' name='to' type="datetime" [(ngModel)]="bookItemSearchKey.to" />
-  </div>
-  <div>
-    <label class='lb'>書名</label>
-    <input id='titleSearch' name='titleSearch' type="text" [(ngModel)]="bookItemSearchKey.title" />
-  </div>
-  <div>
-    <label class='lb'>著者</label>
-    <input id='authorSearch' name='authorSearch' type="text" [(ngModel)]="bookItemSearchKey.author" />
-  </div>
-  <div>
-    <label class='lb'for='publisher'>出版社</label>
-    <input id='publisherSearch' name='publisherSearch' type="text" [(ngModel)]="bookItemSearchKey.publisher" />
-  </div>
-  <div>
-    <label class='lb'for='class'>分類</label>
-    <input id='classSearch' name='classSearch' type="text" [(ngModel)]="bookItemSearchKey.class" />
-  </div>
-  <div>
-    <label class='lb'for='publshYear'>出版年</label>
-    <input id='publshYearSearch' name='publshYearSearch' type="text" [(ngModel)]="bookItemSearchKey.publishYear" />
-  </div>
-  <div>
-    <label class='lb'>おすすめ</label>
-    <input id='reccomendSearch' name='reccomendSearch' type="range" min="0" max="9" [(ngModel)]="bookItemSearchKey.recommendFlg" />
-  </div>
+  <label class="lb">日付From</label>
+  <input
+    id="from"
+    name="from"
+    type="datetime"
+    [(ngModel)]="bookItemSearchKey.from"
+  />
+</div>
+<div>
+  <label class="lb">日付To</label>
+  <input id="to" name="to" type="datetime" [(ngModel)]="bookItemSearchKey.to" />
+</div>
+<div>
+  <label class="lb">書名</label>
+  <input
+    id="titleSearch"
+    name="titleSearch"
+    type="text"
+    [(ngModel)]="bookItemSearchKey.title"
+  />
+</div>
+<div>
+  <label class="lb">著者</label>
+  <input
+    id="authorSearch"
+    name="authorSearch"
+    type="text"
+    [(ngModel)]="bookItemSearchKey.author"
+  />
+</div>
+<div>
+  <label class="lb" for="publisher">出版社</label>
+  <input
+    id="publisherSearch"
+    name="publisherSearch"
+    type="text"
+    [(ngModel)]="bookItemSearchKey.publisher"
+  />
+</div>
+<div>
+  <label class="lb" for="class">分類</label>
+  <input
+    id="classSearch"
+    name="classSearch"
+    type="text"
+    [(ngModel)]="bookItemSearchKey.class"
+  />
+</div>
+<div>
+  <label class="lb" for="publshYear">出版年</label>
+  <input
+    id="publshYearSearch"
+    name="publshYearSearch"
+    type="text"
+    [(ngModel)]="bookItemSearchKey.publishYear"
+  />
+</div>
+<div>
+  <label class="lb">おすすめ</label>
+  <input
+    id="reccomendSearch"
+    name="reccomendSearch"
+    type="range"
+    min="0"
+    max="9"
+    [(ngModel)]="bookItemSearchKey.isRecommend"
+  />
+</div>

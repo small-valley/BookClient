@@ -5,12 +5,7 @@ import { environment } from "src/environments/environment";
 import { HttpReqOptions } from "../models/http";
 import { RightBarComponent } from "../parts/right-bar/right-bar.component";
 import { HttpService } from "../services/http.service";
-import {
-  BookItem,
-  BookItemCsv,
-  BookItemSearchKey,
-  IBookItem,
-} from "../stores/book.store";
+import { BookItem, BookItemSearchKey, IBookItem } from "../stores/book.store";
 
 @Component({
   selector: "app-book",
@@ -19,26 +14,26 @@ import {
 })
 export class BookComponent implements OnInit {
   @ViewChild(RightBarComponent)
-  books: BookItem[] = [];
+  books: IBookItem[] = [];
 
-  dataSource = new MatTableDataSource<BookItem>(this.books);
+  dataSource = new MatTableDataSource<IBookItem>(this.books);
 
   bookItemSearchKey = new BookItemSearchKey();
 
-  bookItems: BookItem[] = [];
+  bookItems: IBookItem[] = [];
 
   bookItem = new BookItem();
 
   columns = [
     {
-      columnDef: "autonumber",
+      columnDef: "id",
       header: "No",
-      cell: (element: IBookItem) => `${element.autonumber}`,
+      cell: (element: IBookItem) => `${element.id}`,
     },
     {
-      columnDef: "dateTime",
+      columnDef: "date",
       header: "日付",
-      cell: (element: IBookItem) => `${element.dateTime}`,
+      cell: (element: IBookItem) => `${element.date}`,
     },
     {
       columnDef: "title",
@@ -66,15 +61,13 @@ export class BookComponent implements OnInit {
       cell: (element: IBookItem) => `${element.pageCount}`,
     },
     {
-      columnDef: "recommendFlg",
+      columnDef: "isRecommend",
       header: "おすすめ",
-      cell: (element: IBookItem) => `${element.recommendFlg}`,
+      cell: (element: IBookItem) => `${element.isRecommend}`,
     },
   ];
 
   displayedColumns = this.columns.map((c) => c.columnDef);
-
-  public param: any;
 
   public messageInfo: any = {
     id: null,
@@ -111,8 +104,7 @@ export class BookComponent implements OnInit {
     };
     this.httpService.put<number>(reqHttpOptions).subscribe(
       (response) => {
-        this.param = response;
-        this.messageInfoList = this.param.messages;
+        this.messageInfoList = response.errMessages;
       },
       (error) => console.log(error)
     );
@@ -122,17 +114,16 @@ export class BookComponent implements OnInit {
 
   onClickDelete($event: any): void {
     const reqHttpOptions: HttpReqOptions = {
-      url: environment.apiurl + "/book/" + this.bookItem.autonumber,
+      url: environment.apiurl + "/book",
       httpOptions: {
         params: {
-          autoNumber: this.bookItem.autonumber,
+          id: this.bookItem.id,
         },
       },
     };
     this.httpService.delete<number>(reqHttpOptions).subscribe(
       (response) => {
-        this.param = response;
-        this.messageInfoList = this.param.messages;
+        this.messageInfoList = response.errMessages;
       },
       (error) => console.log(error)
     );
@@ -141,19 +132,20 @@ export class BookComponent implements OnInit {
   }
 
   onClickTable(i: number): void {
-    this.bookItem.autonumber = this.books[i].autonumber;
-    this.bookItem.dateTime = this.books[i].dateTime;
-    this.bookItem.title = this.books[i].title;
-    this.bookItem.authorCd = this.books[i].authorCd;
-    this.bookItem.author = this.books[i].author;
-    this.bookItem.publisherCd = this.books[i].publisherCd;
-    this.bookItem.publisher = this.books[i].publisher;
-    this.bookItem.classCd = this.books[i].classCd;
-    this.bookItem.class = this.books[i].class;
-    this.bookItem.pageCount = this.books[i].pageCount;
-    this.bookItem.publishYear = this.books[i].publishYear;
-    this.bookItem.recommendFlg = this.books[i].recommendFlg;
-    //alert(this.books[i].autonumber);
+    console.log(this.dataSource.data, i);
+    this.bookItem.id = this.dataSource.data[i].id;
+    this.bookItem.date = this.dataSource.data[i].date;
+    this.bookItem.title = this.dataSource.data[i].title;
+    this.bookItem.authorId = this.dataSource.data[i].authorId;
+    this.bookItem.author = this.dataSource.data[i].author;
+    this.bookItem.publisherId = this.dataSource.data[i].publisherId;
+    this.bookItem.publisher = this.dataSource.data[i].publisher;
+    this.bookItem.classId = this.dataSource.data[i].classId;
+    this.bookItem.class = this.dataSource.data[i].class;
+    this.bookItem.pageCount = this.dataSource.data[i].pageCount;
+    this.bookItem.publishYear = this.dataSource.data[i].publishYear;
+    this.bookItem.isRecommend = this.dataSource.data[i].isRecommend;
+    //alert(this.dataSource.data[i].autonumber);
   }
 
   getBooksData(): void {
@@ -163,16 +155,14 @@ export class BookComponent implements OnInit {
         params: this.bookItemSearchKey,
       },
     };
-    this.httpService.get<BookItem[]>(reqHttpOptions).subscribe(
+    this.httpService.get<IBookItem[]>(reqHttpOptions).subscribe(
       (response) => {
-        this.param = response;
-        this.books = this.param;
-        this.messageInfoList = this.param.messages;
+        this.dataSource = new MatTableDataSource<IBookItem>(response ?? []);
+        this.messageInfoList = response;
         console.log(response);
       },
       (error) => console.log(error)
     );
-    //this.books = this.param.body;
   }
 
   postBooksDate(data: any): void {
@@ -182,8 +172,7 @@ export class BookComponent implements OnInit {
     };
     this.httpService.post<number>(reqHttpOptions).subscribe(
       (response) => {
-        this.param = response;
-        this.messageInfoList = this.param.messages;
+        this.messageInfoList = response.errMessages;
       },
       (error) => console.log(error)
     );
@@ -214,7 +203,7 @@ export class BookComponent implements OnInit {
     });
   }
 
-  public bookItemArray: BookItem[] = [];
+  public bookItemArray: IBookItem[] = [];
 
   parseCsv(data: string): void {
     this.bookItemArray = [];
@@ -222,22 +211,20 @@ export class BookComponent implements OnInit {
     for (let index = 1; index < csvToRowArray.length; index++) {
       let row = csvToRowArray[index].split(",");
       if (row[0] == "") continue;
-      this.bookItemArray.push(
-        new BookItemCsv(
-          0, //autonumber
-          row[0], //dateTime
-          row[1], //title
-          0, //author
-          row[2], //author
-          0, //publisherCd
-          row[3], //publisher
-          0, //classCd
-          row[6], //className
-          row[4], //publishYear
-          parseInt(row[5], 10), //pageCount
-          row[7] //recommendFlg
-        )
-      );
+      this.bookItemArray.push({
+        id: "", //id
+        date: row[0], //date
+        title: row[1], //title
+        authorId: "", //authorId
+        author: row[2], //author
+        publisherId: "", //publisherId
+        publisher: row[3], //publisher
+        classId: "", //classId
+        class: row[6], //class
+        publishYear: row[4], //publishYear
+        pageCount: parseInt(row[5], 10), //pageCount
+        isRecommend: row[7] === "0", //isRecommend
+      });
     }
     console.log(this.bookItemArray);
     this.postBooksDate(this.bookItemArray);
