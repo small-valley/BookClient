@@ -2,6 +2,7 @@ import { NgModule } from "@angular/core";
 
 import { HttpClientModule } from "@angular/common/http";
 import { FormsModule } from "@angular/forms";
+import { MatExpansionModule } from "@angular/material/expansion";
 import { MatIconModule } from "@angular/material/icon";
 import { MatMenuModule } from "@angular/material/menu";
 import { MatPaginatorModule } from "@angular/material/paginator";
@@ -20,6 +21,7 @@ import { BookComponent } from "./book/book.component";
 import { MainComponent } from "./layouts/main/main.component";
 import { MenuBarComponent } from "./parts/menu-bar/menu-bar.component";
 import { RightBarComponent } from "./parts/right-bar/right-bar.component";
+import { SearchBarComponent } from "./parts/search-bar/search-bar.component";
 
 @NgModule({
   declarations: [
@@ -29,6 +31,7 @@ import { RightBarComponent } from "./parts/right-bar/right-bar.component";
     AuthorComponent,
     MenuBarComponent,
     RightBarComponent,
+    SearchBarComponent,
     BookComponent,
   ],
   imports: [
@@ -41,6 +44,7 @@ import { RightBarComponent } from "./parts/right-bar/right-bar.component";
     MatTableModule,
     MatToolbarModule,
     MatMenuModule,
+    MatExpansionModule,
     MatSidenavModule,
     MatPaginatorModule,
     BrowserAnimationsModule,
