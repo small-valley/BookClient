@@ -1,118 +1,126 @@
 <div class="wrapper">
   <div class="box1">
-<table mat-table #table [dataSource]="books" class="mat-elevation-z8">
-<!--
-  <ng-container matColumnDef="DateTime">
-    <th mat-header-cell *matHeaderCellDef> 日付 </th>
-    <td mat-cell *matCellDef="let element"> {{element.dateTime  | date: 'y/MM/dd'}} </td>
-  </ng-container>
+    <table mat-table #table [dataSource]="dataSource" class="mat-elevation-z8">
+      <ng-container
+        *ngFor="let column of columns"
+        [matColumnDef]="column.columnDef"
+      >
+        <th mat-header-cell *matHeaderCellDef>
+          {{ column.header }}
+        </th>
+        <td mat-cell *matCellDef="let row">
+          {{ column.cell(row) }}
+        </td>
+      </ng-container>
 
-  <ng-container matColumnDef="Title">
-    <th mat-header-cell *matHeaderCellDef> タイトル </th>
-    <td mat-cell *matCellDef="let element"> {{element.title}} </td>
-  </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr
+        mat-row
+        *matRowDef="let row; columns: displayedColumns; let i = index"
+        (click)="onClickTable(i)"
+      ></tr>
+    </table>
 
-  <ng-container matColumnDef="Author">
-    <th mat-header-cell *matHeaderCellDef> 著者 </th>
-    <td mat-cell *matCellDef="let element"> {{element.author}} </td>
-  </ng-container>
-
-  <ng-container matColumnDef="Publisher">
-    <th mat-header-cell *matHeaderCellDef> 出版社 </th>
-    <td mat-cell *matCellDef="let element"> {{element.publisher}} </td>
-  </ng-container>
-
-  <ng-container matColumnDef="Class">
-    <th mat-header-cell *matHeaderCellDef> 分類 </th>
-    <td mat-cell *matCellDef="let element"> {{element.class}} </td>
-  </ng-container>
-
-  <ng-container matColumnDef="PageCount">
-    <th mat-header-cell *matHeaderCellDef> ページ数 </th>
-    <td mat-cell *matCellDef="let element"> {{element.pageCount}} </td>
-  </ng-container>
-
-  <ng-container matColumnDef="PublishYear">
-    <th mat-header-cell *matHeaderCellDef> 出版年 </th>
-    <td mat-cell *matCellDef="let element"> {{element.publishYear}} </td>
-  </ng-container>
-
-  <ng-container matColumnDef="RecommendFlg">
-    <th mat-header-cell *matHeaderCellDef> おすすめ </th>
-    <td mat-cell *matCellDef="let element"> {{element.recommendFlg}} </td>
-  </ng-container>
--->
-  <ng-container *ngFor="let column of columns" [matColumnDef]="column.columnDef">
-    <th mat-header-cell *matHeaderCellDef>
-      {{column.header}}
-    </th>
-    <td mat-cell *matCellDef="let row">
-      {{column.cell(row)}}
-    </td>
-  </ng-container>
-
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns; let i = index" (click)="onClickTable(i)"></tr>
-</table>
-
-<mat-paginator [pageSizeOptions]="[5, 10, 20]"
-showFirstLastButtons 
-aria-label="Select page of periodic elements">
-</mat-paginator>
-
-</div>
-
-<br>
-
-<div class="box2">
-  <app-right-bar></app-right-bar>
-
-  <p>
-    <input type="button" id="get" value="表示" (click)="onClickGet($event)">
-    <input type="button" id="post" value="登録" (click)="onClickPost($event)">
-    <input type="button" id="put" value="更新" (click)="onClickPut($event)">
-    <input type="button" id="delete" value="削除" (click)="onClickDelete($event)">
-  </p>
-  
-  <div>
-    <label for='date'>日付</label>
-    <input id='date' name='date' type="datetime" [(ngModel)]="bookItem.dateTime" />
+    <mat-paginator
+      [pageSizeOptions]="[5, 10, 20]"
+      showFirstLastButtons
+      aria-label="Select page of periodic elements"
+    >
+    </mat-paginator>
   </div>
-  <div>
-    <label for='title'>書名</label>
-    <input id='title' name='title' type="text" [(ngModel)]="bookItem.title" />
-  </div>
-  <div>
-    <label for='author'>著者</label>
-    <input id='author' name='author' type="text" [(ngModel)]="bookItem.author" />
-  </div>
-  <div>
-    <label for='publisher'>出版社</label>
-    <input id='publisher' name='publisher' type="text" [(ngModel)]="bookItem.publisher" />
-  </div>
-  <div>
-    <label for='class'>分類</label>
-    <input id='class' name='class' type="text" [(ngModel)]="bookItem.class" />
-  </div>
-  <div>
-    <label for='page'>ページ数</label>
-    <input id='page' name='page' type="number" [(ngModel)]="bookItem.pageCount" />
-  </div>
-  <div>
-    <label for='publshYear'>出版年</label>
-    <input id='publshYear' name='publshYear' type="text" [(ngModel)]="bookItem.publishYear" />
-  </div>
-  <div>
-    <label for='reccomend'>おすすめ</label>
-    <input id='reccomend' name='reccomend' type="range" min="0" max="9" [(ngModel)]="bookItem.recommendFlg" />
-  </div>
-  
-  <!-- テキストファイルを選択するinput -->
-  <input type="file" (change)="onClickCsvDataPost($event)">
-  
-  <zxing-scanner (scanSuccess)="onCodeResult($event)"></zxing-scanner>
-  
-  <p>{{qrResultString}}</p>
-</div>
 
+  <br />
+
+  <div class="box2">
+    <app-right-bar></app-right-bar>
+
+    <p>
+      <input type="button" id="get" value="表示" (click)="onClickGet($event)" />
+      <input
+        type="button"
+        id="post"
+        value="登録"
+        (click)="onClickPost($event)"
+      />
+      <input type="button" id="put" value="更新" (click)="onClickPut($event)" />
+      <input
+        type="button"
+        id="delete"
+        value="削除"
+        (click)="onClickDelete($event)"
+      />
+    </p>
+
+    <div>
+      <label for="date">日付</label>
+      <input
+        id="date"
+        name="date"
+        type="datetime"
+        [(ngModel)]="bookItem.dateTime"
+      />
+    </div>
+    <div>
+      <label for="title">書名</label>
+      <input id="title" name="title" type="text" [(ngModel)]="bookItem.title" />
+    </div>
+    <div>
+      <label for="author">著者</label>
+      <input
+        id="author"
+        name="author"
+        type="text"
+        [(ngModel)]="bookItem.author"
+      />
+    </div>
+    <div>
+      <label for="publisher">出版社</label>
+      <input
+        id="publisher"
+        name="publisher"
+        type="text"
+        [(ngModel)]="bookItem.publisher"
+      />
+    </div>
+    <div>
+      <label for="class">分類</label>
+      <input id="class" name="class" type="text" [(ngModel)]="bookItem.class" />
+    </div>
+    <div>
+      <label for="page">ページ数</label>
+      <input
+        id="page"
+        name="page"
+        type="number"
+        [(ngModel)]="bookItem.pageCount"
+      />
+    </div>
+    <div>
+      <label for="publshYear">出版年</label>
+      <input
+        id="publshYear"
+        name="publshYear"
+        type="text"
+        [(ngModel)]="bookItem.publishYear"
+      />
+    </div>
+    <div>
+      <label for="reccomend">おすすめ</label>
+      <input
+        id="reccomend"
+        name="reccomend"
+        type="range"
+        min="0"
+        max="9"
+        [(ngModel)]="bookItem.recommendFlg"
+      />
+    </div>
+
+    <!-- テキストファイルを選択するinput -->
+    <input type="file" (change)="onClickCsvDataPost($event)" />
+
+    <zxing-scanner (scanSuccess)="onCodeResult($event)"></zxing-scanner>
+
+    <p>{{ qrResultString }}</p>
+  </div>
 </div>
