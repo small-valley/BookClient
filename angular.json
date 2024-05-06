@@ -104,5 +104,7 @@
       }
     }
   },
-  "defaultProject": "BookClient"
+  "cli": {
+    "analytics": false
+  }
 }
