@@ -5,7 +5,7 @@ import { environment } from "src/environments/environment";
 import { HttpReqOptions } from "../models/http";
 import { RightBarComponent } from "../parts/right-bar/right-bar.component";
 import { HttpService } from "../services/http.service";
-import { BookItem, BookItemSearchKey, IBookItem } from "../stores/book.store";
+import { BookItemSearchKey, IBookItem } from "../stores/book.store";
 
 @Component({
   selector: "app-book",
@@ -14,15 +14,9 @@ import { BookItem, BookItemSearchKey, IBookItem } from "../stores/book.store";
 })
 export class BookComponent implements OnInit {
   @ViewChild(RightBarComponent)
-  protected books: IBookItem[] = [];
-
-  protected dataSource = new MatTableDataSource<IBookItem>(this.books);
+  protected dataSource = new MatTableDataSource<IBookItem>([]);
 
   protected bookItemSearchKey = new BookItemSearchKey();
-
-  protected bookItems: IBookItem[] = [];
-
-  protected bookItem = new BookItem();
 
   protected columns = [
     {
@@ -85,6 +79,8 @@ export class BookComponent implements OnInit {
 
   protected editingRowIndex: number | null = null;
 
+  protected isAddButtonDisabled = false;
+
   constructor(private httpService: HttpService) {}
 
   ngOnInit(): void {
@@ -99,17 +95,16 @@ export class BookComponent implements OnInit {
     this.getBooksData();
   }
 
-  onClickPost($event: any): void {
-    this.bookItems[0] = this.bookItem;
-    this.postBooksDate(this.bookItems);
+  onClickPost(row: any): void {
+    this.postBooksDate([row]);
+    this.initState();
     this.getBooksData();
   }
 
-  onClickPut($event: any): void {
-    this.bookItems[0] = this.bookItem;
+  onClickPut(row: any): void {
     const reqHttpOptions: HttpReqOptions = {
       url: environment.apiurl + "/book",
-      body: this.bookItems,
+      body: [row],
     };
     this.httpService.put<number>(reqHttpOptions).subscribe(
       (response) => {
@@ -118,8 +113,7 @@ export class BookComponent implements OnInit {
       (error) => console.log(error)
     );
     //window.alert(this.messageInfoList);
-    // Reset the edit state
-    this.editingRowIndex = null;
+    this.initState();
     this.getBooksData();
   }
 
@@ -139,24 +133,8 @@ export class BookComponent implements OnInit {
       (error) => console.log(error)
     );
     //window.alert(this.messageInfoList);
+    this.initState();
     this.getBooksData();
-  }
-
-  onClickTable(i: number): void {
-    console.log(this.dataSource.data, i);
-    this.bookItem.id = this.dataSource.data[i].id;
-    this.bookItem.date = this.dataSource.data[i].date;
-    this.bookItem.title = this.dataSource.data[i].title;
-    this.bookItem.authorId = this.dataSource.data[i].authorId;
-    this.bookItem.author = this.dataSource.data[i].author;
-    this.bookItem.publisherId = this.dataSource.data[i].publisherId;
-    this.bookItem.publisher = this.dataSource.data[i].publisher;
-    this.bookItem.classId = this.dataSource.data[i].classId;
-    this.bookItem.class = this.dataSource.data[i].class;
-    this.bookItem.pageCount = this.dataSource.data[i].pageCount;
-    this.bookItem.publishYear = this.dataSource.data[i].publishYear;
-    this.bookItem.isRecommend = this.dataSource.data[i].isRecommend;
-    //alert(this.dataSource.data[i].autonumber);
   }
 
   /**
@@ -164,6 +142,12 @@ export class BookComponent implements OnInit {
    * @param rowIndex The index of the row to edit
    */
   onClickEdit(rowIndex: number): void {
+    if (this.dataSource.data[0].id === "") {
+      // If the first row is in add mode, remove it
+      this.dataSource.data.shift();
+      this.dataSource.data = [...this.dataSource.data];
+      rowIndex--;
+    }
     this.editingRowIndex = rowIndex;
   }
 
@@ -171,7 +155,37 @@ export class BookComponent implements OnInit {
    * Toggle the editing state for a row
    */
   onClickAbortEdit(): void {
+    if (this.dataSource.data[0].id === "") {
+      // If the first row is in add mode, remove it
+      this.dataSource.data.shift();
+      this.dataSource.data = [...this.dataSource.data];
+    }
+    this.initState();
+  }
+
+  addRow(): void {
+    const newRow: IBookItem = {
+      id: "",
+      date: "",
+      title: "",
+      authorId: "",
+      author: "",
+      publisherId: "",
+      publisher: "",
+      classId: "",
+      class: "",
+      pageCount: 0,
+      publishYear: "",
+      isRecommend: false,
+    };
+    this.dataSource.data = [newRow, ...this.dataSource.data];
+    this.editingRowIndex = 0;
+    this.isAddButtonDisabled = true;
+  }
+
+  initState(): void {
     this.editingRowIndex = null;
+    this.isAddButtonDisabled = false;
   }
 
   getBooksData(): void {

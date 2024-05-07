@@ -13,21 +13,6 @@ export interface IBookItem {
   isRecommend: boolean;
 }
 
-export class BookItem implements IBookItem {
-  id = "";
-  date: string | null = null;
-  title = "";
-  authorId = "";
-  author = "";
-  publisherId = "";
-  publisher = "";
-  classId = "";
-  class = "";
-  publishYear = "";
-  pageCount = 0;
-  isRecommend = false;
-}
-
 export class BookItemSearchKey {
   from: string | null = "";
   to: string | null = "";

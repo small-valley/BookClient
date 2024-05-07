@@ -38,3 +38,9 @@ td input {
 .column-button td.mat-cell {
   width: 50px;
 }
+
+#table-footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+}

@@ -29,8 +29,19 @@
               *ngIf="column.columnDef === 'edit'"
               class="column-button"
             >
-              <button mat-icon-button (click)="onClickPut(rowIndex)">
+              <button
+                mat-icon-button
+                (click)="onClickPut(row)"
+                *ngIf="row.id !== ''"
+              >
                 <mat-icon>save</mat-icon>
+              </button>
+              <button
+                mat-icon-button
+                (click)="onClickPost(row)"
+                *ngIf="row.id === ''"
+              >
+                <mat-icon>add</mat-icon>
               </button>
             </ng-container>
           </ng-container>
@@ -61,104 +72,30 @@
       <tr
         mat-row
         *matRowDef="let row; columns: displayedColumns; let i = index"
-        (click)="onClickTable(i)"
       ></tr>
     </table>
 
-    <mat-paginator
-      [pageSizeOptions]="[5, 10, 20]"
-      showFirstLastButtons
-      aria-label="Select page of periodic elements"
-    >
-    </mat-paginator>
+    <div id="table-footer">
+      <button
+        mat-icon-button
+        (click)="addRow()"
+        [disabled]="isAddButtonDisabled"
+      >
+        <mat-icon>add</mat-icon>
+      </button>
+      <mat-paginator
+        [pageSizeOptions]="[20, 50, 100]"
+        showFirstLastButtons
+        aria-label="Select page of periodic elements"
+      >
+      </mat-paginator>
+    </div>
   </div>
 
   <br />
 
   <div class="box2">
     <app-right-bar></app-right-bar>
-
-    <p>
-      <input type="button" id="get" value="表示" (click)="onClickGet($event)" />
-      <input
-        type="button"
-        id="post"
-        value="登録"
-        (click)="onClickPost($event)"
-      />
-      <input type="button" id="put" value="更新" (click)="onClickPut($event)" />
-      <input
-        type="button"
-        id="delete"
-        value="削除"
-        (click)="onClickDelete($event)"
-      />
-    </p>
-
-    <div>
-      <label for="date">日付</label>
-      <input
-        id="date"
-        name="date"
-        type="datetime"
-        [(ngModel)]="bookItem.date"
-      />
-    </div>
-    <div>
-      <label for="title">書名</label>
-      <input id="title" name="title" type="text" [(ngModel)]="bookItem.title" />
-    </div>
-    <div>
-      <label for="author">著者</label>
-      <input
-        id="author"
-        name="author"
-        type="text"
-        [(ngModel)]="bookItem.author"
-      />
-    </div>
-    <div>
-      <label for="publisher">出版社</label>
-      <input
-        id="publisher"
-        name="publisher"
-        type="text"
-        [(ngModel)]="bookItem.publisher"
-      />
-    </div>
-    <div>
-      <label for="class">分類</label>
-      <input id="class" name="class" type="text" [(ngModel)]="bookItem.class" />
-    </div>
-    <div>
-      <label for="page">ページ数</label>
-      <input
-        id="page"
-        name="page"
-        type="number"
-        [(ngModel)]="bookItem.pageCount"
-      />
-    </div>
-    <div>
-      <label for="publshYear">出版年</label>
-      <input
-        id="publshYear"
-        name="publshYear"
-        type="text"
-        [(ngModel)]="bookItem.publishYear"
-      />
-    </div>
-    <div>
-      <label for="reccomend">おすすめ</label>
-      <input
-        id="reccomend"
-        name="reccomend"
-        type="range"
-        min="0"
-        max="9"
-        [(ngModel)]="bookItem.isRecommend"
-      />
-    </div>
 
     <!-- テキストファイルを選択するinput -->
     <input type="file" (change)="onClickCsvDataPost($event)" />
