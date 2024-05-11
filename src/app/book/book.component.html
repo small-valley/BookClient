@@ -1,107 +1,98 @@
-<app-search-bar></app-search-bar>
-<div class="wrapper">
-  <div class="box1">
-    <table mat-table #table [dataSource]="dataSource" class="mat-elevation-z8">
-      <ng-container
-        *ngFor="let column of columns"
-        [matColumnDef]="column.columnDef"
-      >
-        <th mat-header-cell *matHeaderCellDef>
-          {{ column.header }}
-        </th>
-        <td mat-cell *matCellDef="let row; let rowIndex = index">
-          <!-- Render input elements for editing -->
-          <ng-container *ngIf="editingRowIndex === rowIndex">
-            <ng-container *ngIf="column.columnDef !== 'edit'">
-              <ng-container
-                *ngIf="column.columnDef === 'delete'"
-                class="column-button"
-              >
-                <button mat-icon-button (click)="onClickAbortEdit()">
-                  <mat-icon>arrow_back</mat-icon>
-                </button>
-              </ng-container>
-              <ng-container *ngIf="column.columnDef !== 'delete'">
-                <input matInput [(ngModel)]="row[column.columnDef]" />
-              </ng-container>
-            </ng-container>
-            <ng-container
-              *ngIf="column.columnDef === 'edit'"
-              class="column-button"
-            >
-              <button
-                mat-icon-button
-                (click)="onClickPut(row)"
-                *ngIf="row.id !== ''"
-              >
-                <mat-icon>save</mat-icon>
-              </button>
-              <button
-                mat-icon-button
-                (click)="onClickPost(row)"
-                *ngIf="row.id === ''"
-              >
-                <mat-icon>add</mat-icon>
-              </button>
-            </ng-container>
-          </ng-container>
-          <!-- Render regular cell content when not editing -->
-          <ng-container *ngIf="editingRowIndex !== rowIndex">
-            {{ column.cell(row) }}
-            <ng-container
-              *ngIf="column.columnDef === 'edit'"
-              class="column-button"
-            >
-              <button mat-icon-button (click)="onClickEdit(rowIndex)">
-                <mat-icon>edit</mat-icon>
-              </button>
-            </ng-container>
+<div class="container">
+  <app-search-bar (inputValues)="handleInputValues($event)"></app-search-bar>
+
+  <table mat-table #table [dataSource]="dataSource" class="mat-elevation-z8">
+    <ng-container
+      *ngFor="let column of columns"
+      [matColumnDef]="column.columnDef"
+    >
+      <th mat-header-cell *matHeaderCellDef>
+        {{ column.header }}
+      </th>
+      <td mat-cell *matCellDef="let row; let rowIndex = index">
+        <!-- Render input elements for editing -->
+        <ng-container *ngIf="editingRowIndex === rowIndex">
+          <ng-container *ngIf="column.columnDef !== 'edit'">
             <ng-container
               *ngIf="column.columnDef === 'delete'"
               class="column-button"
             >
-              <button mat-icon-button (click)="onClickDelete(row)">
-                <mat-icon>delete</mat-icon>
+              <button mat-icon-button (click)="onClickAbortEdit()">
+                <mat-icon>arrow_back</mat-icon>
               </button>
             </ng-container>
+            <ng-container *ngIf="column.columnDef !== 'delete'">
+              <input matInput [(ngModel)]="row[column.columnDef]" />
+            </ng-container>
           </ng-container>
-        </td>
-      </ng-container>
+          <ng-container
+            *ngIf="column.columnDef === 'edit'"
+            class="column-button"
+          >
+            <button
+              mat-icon-button
+              (click)="onClickPut(row)"
+              *ngIf="row.id !== ''"
+            >
+              <mat-icon>save</mat-icon>
+            </button>
+            <button
+              mat-icon-button
+              (click)="onClickPost(row)"
+              *ngIf="row.id === ''"
+            >
+              <mat-icon>add</mat-icon>
+            </button>
+          </ng-container>
+        </ng-container>
+        <!-- Render regular cell content when not editing -->
+        <ng-container *ngIf="editingRowIndex !== rowIndex">
+          {{ column.cell(row) }}
+          <ng-container
+            *ngIf="column.columnDef === 'edit'"
+            class="column-button"
+          >
+            <button mat-icon-button (click)="onClickEdit(rowIndex)">
+              <mat-icon>edit</mat-icon>
+            </button>
+          </ng-container>
+          <ng-container
+            *ngIf="column.columnDef === 'delete'"
+            class="column-button"
+          >
+            <button mat-icon-button (click)="onClickDelete(row)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </ng-container>
+        </ng-container>
+      </td>
+    </ng-container>
 
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr
-        mat-row
-        *matRowDef="let row; columns: displayedColumns; let i = index"
-      ></tr>
-    </table>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr
+      mat-row
+      *matRowDef="let row; columns: displayedColumns; let i = index"
+    ></tr>
+  </table>
 
-    <div id="table-footer">
-      <button
-        mat-icon-button
-        (click)="addRow()"
-        [disabled]="isAddButtonDisabled"
-      >
-        <mat-icon>add</mat-icon>
-      </button>
-      <mat-paginator
-        [pageSizeOptions]="[20, 50, 100]"
-        showFirstLastButtons
-        aria-label="Select page of periodic elements"
-      >
-      </mat-paginator>
-    </div>
+  <div id="table-footer">
+    <button mat-icon-button (click)="addRow()" [disabled]="isAddButtonDisabled">
+      <mat-icon>add</mat-icon>
+    </button>
+    <mat-paginator
+      [pageSizeOptions]="[20, 50, 100]"
+      showFirstLastButtons
+      aria-label="Select page of periodic elements"
+    >
+    </mat-paginator>
   </div>
+</div>
 
-  <br />
+<div>
+  <!-- テキストファイルを選択するinput -->
+  <input type="file" (change)="onClickCsvDataPost($event)" />
 
-  <div class="box2">
-    <app-right-bar></app-right-bar>
+  <zxing-scanner (scanSuccess)="onCodeResult($event)"></zxing-scanner>
 
-    <!-- テキストファイルを選択するinput -->
-    <input type="file" (change)="onClickCsvDataPost($event)" />
-
-    <zxing-scanner (scanSuccess)="onCodeResult($event)"></zxing-scanner>
-
-    <p>{{ qrResultString }}</p>
-  </div>
+  <p>{{ qrResultString }}</p>
 </div>

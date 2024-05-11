@@ -13,7 +13,19 @@ export interface IBookItem {
   isRecommend: boolean;
 }
 
-export class BookItemSearchKey {
+export interface IBookItemSearchKey {
+  from: string | null;
+  to: string | null;
+  title: string;
+  author: string;
+  publisher: string;
+  class: string;
+  publishYear: string;
+  isRecommend: boolean;
+  [key: string]: string | boolean | null;
+}
+
+export class BookItemSearchKey implements IBookItemSearchKey {
   from: string | null = "";
   to: string | null = "";
   title: string = "";
@@ -22,4 +34,5 @@ export class BookItemSearchKey {
   class: string = "";
   publishYear: string = "";
   isRecommend: boolean = true;
+  [key: string]: string | boolean | null;
 }

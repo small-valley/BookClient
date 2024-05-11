@@ -21,7 +21,6 @@ import { AuthorComponent } from "./author/author.component";
 import { BookComponent } from "./book/book.component";
 import { MainComponent } from "./layouts/main/main.component";
 import { MenuBarComponent } from "./parts/menu-bar/menu-bar.component";
-import { RightBarComponent } from "./parts/right-bar/right-bar.component";
 import { SearchBarComponent } from "./parts/search-bar/search-bar.component";
 
 @NgModule({
@@ -31,7 +30,6 @@ import { SearchBarComponent } from "./parts/search-bar/search-bar.component";
     AuthComponent,
     AuthorComponent,
     MenuBarComponent,
-    RightBarComponent,
     SearchBarComponent,
     BookComponent,
   ],

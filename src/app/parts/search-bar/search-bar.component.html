@@ -1,14 +1,18 @@
 <mat-accordion>
-  <mat-expansion-panel
-    (opened)="panelOpenState = true"
-    (closed)="panelOpenState = false"
-  >
+  <mat-expansion-panel>
     <mat-expansion-panel-header>
-      <mat-panel-title> Self aware panel </mat-panel-title>
+      <mat-panel-title>Search conditions</mat-panel-title>
       <mat-panel-description>
-        Currently I am {{ panelOpenState ? "open" : "closed" }}
+        {{ panelDescription }}
       </mat-panel-description>
     </mat-expansion-panel-header>
-    <p>I'm visible because I am open</p>
+    <ng-container *ngFor="let key of searchKeys">
+      <mat-form-field>
+        <input matInput [placeholder]="key" [(ngModel)]="searchKey[key]" />
+      </mat-form-field>
+    </ng-container>
+    <button mat-raised-button (click)="onSearchClick()">
+      <mat-icon>search</mat-icon>
+    </button>
   </mat-expansion-panel>
 </mat-accordion>

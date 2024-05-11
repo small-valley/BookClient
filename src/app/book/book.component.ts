@@ -1,11 +1,14 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 
 import { MatTableDataSource } from "@angular/material/table";
 import { environment } from "src/environments/environment";
 import { HttpReqOptions } from "../models/http";
-import { RightBarComponent } from "../parts/right-bar/right-bar.component";
 import { HttpService } from "../services/http.service";
-import { BookItemSearchKey, IBookItem } from "../stores/book.store";
+import {
+  BookItemSearchKey,
+  IBookItem,
+  IBookItemSearchKey,
+} from "../stores/book.store";
 
 @Component({
   selector: "app-book",
@@ -13,8 +16,8 @@ import { BookItemSearchKey, IBookItem } from "../stores/book.store";
   styleUrls: ["./book.component.css"],
 })
 export class BookComponent implements OnInit {
-  @ViewChild(RightBarComponent)
-  protected dataSource = new MatTableDataSource<IBookItem>([]);
+  protected books: IBookItem[] = [];
+  protected dataSource = new MatTableDataSource<IBookItem>(this.books);
 
   protected bookItemSearchKey = new BookItemSearchKey();
 
@@ -85,10 +88,6 @@ export class BookComponent implements OnInit {
 
   ngOnInit(): void {
     this.getBooksData();
-  }
-
-  getChildComponent(child: RightBarComponent): BookItemSearchKey {
-    return child.bookItemSearchKey;
   }
 
   onClickGet($event: any): void {
@@ -188,6 +187,11 @@ export class BookComponent implements OnInit {
     this.isAddButtonDisabled = false;
   }
 
+  handleInputValues($event: IBookItemSearchKey): void {
+    this.bookItemSearchKey = $event;
+    this.getBooksData();
+  }
+
   getBooksData(): void {
     const reqHttpOptions: HttpReqOptions = {
       url: environment.apiurl + "/book",
@@ -199,7 +203,6 @@ export class BookComponent implements OnInit {
       (response) => {
         this.dataSource = new MatTableDataSource<IBookItem>(response ?? []);
         this.messageInfoList = response;
-        console.log(response);
       },
       (error) => console.log(error)
     );
