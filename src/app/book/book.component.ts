@@ -71,15 +71,6 @@ export class BookComponent implements OnInit {
 
   protected displayedColumns = this.columns.map((c) => c.columnDef);
 
-  protected messageInfo: any = {
-    id: null,
-    message: null,
-  };
-
-  protected messageInfoList: any = [this.messageInfo];
-
-  protected qrResultString: string = "";
-
   protected editingRowIndex: number | null = null;
 
   protected isAddButtonDisabled = false;
@@ -107,7 +98,7 @@ export class BookComponent implements OnInit {
     };
     this.httpService.put<number>(reqHttpOptions).subscribe(
       (response) => {
-        this.messageInfoList = response.errMessages;
+        console.log(response);
       },
       (error) => console.log(error)
     );
@@ -127,7 +118,7 @@ export class BookComponent implements OnInit {
     };
     this.httpService.delete<number>(reqHttpOptions).subscribe(
       (response) => {
-        this.messageInfoList = response.errMessages;
+        console.log(response);
       },
       (error) => console.log(error)
     );
@@ -202,7 +193,7 @@ export class BookComponent implements OnInit {
     this.httpService.get<IBookItem[]>(reqHttpOptions).subscribe(
       (response) => {
         this.dataSource = new MatTableDataSource<IBookItem>(response ?? []);
-        this.messageInfoList = response;
+        console.log(response);
       },
       (error) => console.log(error)
     );
@@ -215,65 +206,10 @@ export class BookComponent implements OnInit {
     };
     this.httpService.post<number>(reqHttpOptions).subscribe(
       (response) => {
-        this.messageInfoList = response.errMessages;
+        console.log(response);
       },
       (error) => console.log(error)
     );
     //window.alert(this.param.body);
-  }
-
-  onClickCsvDataPost($event: any) {
-    const file = $event.target.files[0];
-    this.fileToText(file)
-      .then((text) => {
-        console.log(text);
-        this.parseCsv(text);
-      })
-      .catch((err) => console.log(err));
-    //this.uploadListener(file);
-  }
-
-  fileToText(file: any): Promise<string> {
-    const reader = new FileReader();
-    reader.readAsText(file);
-    return new Promise((resolve, reject) => {
-      reader.onload = () => {
-        resolve(reader.result?.toString()!);
-      };
-      reader.onerror = () => {
-        reject(reader.error);
-      };
-    });
-  }
-
-  public bookItemArray: IBookItem[] = [];
-
-  parseCsv(data: string): void {
-    this.bookItemArray = [];
-    let csvToRowArray = data.split("\n");
-    for (let index = 1; index < csvToRowArray.length; index++) {
-      let row = csvToRowArray[index].split(",");
-      if (row[0] == "") continue;
-      this.bookItemArray.push({
-        id: "", //id
-        date: row[0], //date
-        title: row[1], //title
-        authorId: "", //authorId
-        author: row[2], //author
-        publisherId: "", //publisherId
-        publisher: row[3], //publisher
-        classId: "", //classId
-        class: row[6], //class
-        publishYear: row[4], //publishYear
-        pageCount: parseInt(row[5], 10), //pageCount
-        isRecommend: row[7] === "0", //isRecommend
-      });
-    }
-    console.log(this.bookItemArray);
-    this.postBooksDate(this.bookItemArray);
-  }
-
-  onCodeResult(resultString: string) {
-    this.qrResultString = resultString;
   }
 }

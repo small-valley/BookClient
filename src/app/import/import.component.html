@@ -1,0 +1,15 @@
+<div>
+  <input
+    type="file"
+    #fileInput
+    (change)="onClickCsvDataPost($event)"
+    class="file-upload"
+  />
+  <button mat-icon-button (click)="fileInput.click()">
+    <mat-icon>cloud_upload</mat-icon>
+  </button>
+
+  <zxing-scanner (scanSuccess)="onCodeResult($event)"></zxing-scanner>
+
+  <p>{{ qrResultString }}</p>
+</div>

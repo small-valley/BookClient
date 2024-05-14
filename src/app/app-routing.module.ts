@@ -4,6 +4,7 @@ import { AppComponent } from "./app.component";
 import { AuthComponent } from "./auth/auth.component";
 import { AuthorComponent } from "./author/author.component";
 import { BookComponent } from "./book/book.component";
+import { ImportComponent } from "./import/import.component";
 import { MainComponent } from "./layouts/main/main.component";
 
 const routes: Routes = [
@@ -18,6 +19,7 @@ const routes: Routes = [
     children: [
       { path: "", component: BookComponent },
       { path: "author", component: AuthorComponent },
+      { path: "import", component: ImportComponent },
     ],
   },
 ];

@@ -19,6 +19,7 @@ import { AuthComponent } from "./auth/auth.component";
 
 import { AuthorComponent } from "./author/author.component";
 import { BookComponent } from "./book/book.component";
+import { ImportComponent } from "./import/import.component";
 import { MainComponent } from "./layouts/main/main.component";
 import { MenuBarComponent } from "./parts/menu-bar/menu-bar.component";
 import { SearchBarComponent } from "./parts/search-bar/search-bar.component";
@@ -32,6 +33,7 @@ import { SearchBarComponent } from "./parts/search-bar/search-bar.component";
     MenuBarComponent,
     SearchBarComponent,
     BookComponent,
+    ImportComponent,
   ],
   imports: [
     BrowserModule,
