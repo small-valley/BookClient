@@ -1,12 +1,17 @@
-import { Component, OnInit } from "@angular/core";
+import { Component } from "@angular/core";
 
 @Component({
   selector: "app-menu-bar",
   templateUrl: "./menu-bar.component.html",
   styleUrls: ["./menu-bar.component.css"],
 })
-export class MenuBarComponent implements OnInit {
+export class MenuBarComponent {
   constructor() {}
 
-  ngOnInit(): void {}
+  protected menuItems = [
+    { icon: "home", label: "Home", routerLink: "" },
+    { icon: "personedit", label: "Author", routerLink: "author" },
+    { icon: "uploadfile", label: "Import", routerLink: "import" },
+    { icon: "tvsignin", label: "Login", routerLink: "auth" },
+  ];
 }
