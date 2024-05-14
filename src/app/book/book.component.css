@@ -2,11 +2,6 @@ table {
   margin-top: 1rem;
 }
 
-div.container {
-  width: 98%;
-  margin: auto;
-}
-
 td input {
   width: 100%;
   padding: 4px;
