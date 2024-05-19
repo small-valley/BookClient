@@ -4,6 +4,7 @@ import { AppComponent } from "./app.component";
 import { AuthComponent } from "./auth/auth.component";
 import { AuthorComponent } from "./author/author.component";
 import { BookComponent } from "./book/book.component";
+import { AuthGuard } from "./guards/auth.guard";
 import { ImportComponent } from "./import/import.component";
 import { MainComponent } from "./layouts/main/main.component";
 
@@ -16,6 +17,7 @@ const routes: Routes = [
   {
     path: "",
     component: MainComponent,
+    canActivate: [AuthGuard],
     children: [
       { path: "", component: BookComponent },
       { path: "author", component: AuthorComponent },

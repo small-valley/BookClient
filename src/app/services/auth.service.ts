@@ -1,4 +1,5 @@
 import { Injectable } from "@angular/core";
+import { ReplaySubject } from "rxjs";
 import { environment } from "../../environments/environment";
 import { HttpReqOptions } from "../models/http";
 import { HttpService } from "./http.service";
@@ -7,7 +8,24 @@ import { HttpService } from "./http.service";
   providedIn: "root",
 })
 export class AuthService {
+  private isAuthenticatedSubject = new ReplaySubject<boolean>(1);
+  isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
+
   constructor(private readonly httpService: HttpService) {}
+
+  checkInitialAuth() {
+    const reqHttpOptions: HttpReqOptions<undefined> = {
+      url: environment.apiurl + "/auth/verify",
+    };
+    this.httpService.get<boolean>(reqHttpOptions).subscribe({
+      next: (response) => {
+        this.isAuthenticatedSubject.next(true);
+      },
+      error: (err) => {
+        this.isAuthenticatedSubject.next(false);
+      },
+    });
+  }
 
   signInViaHostedUi(): void {
     const reqHttpOptions: HttpReqOptions<undefined> = {
@@ -18,7 +36,7 @@ export class AuthService {
         window.location.href = signinUrl;
       },
       error: (err) => {
-        console.error("Error during sign-in:", err);
+        console.error(err);
       },
     });
   }
