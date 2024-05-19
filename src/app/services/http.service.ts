@@ -10,10 +10,13 @@ import { HttpReqOptions, HttpResponseData } from "../models/http";
 export class HttpService {
   constructor(private http: HttpClient) {}
 
-  get<T>(config: HttpReqOptions): Observable<T> {
+  get<T>(config: HttpReqOptions<undefined>): Observable<T> {
     // const ret = new HttpResponseData<T>();
     // ret.isOnline = window.navigator.onLine;
-    return this.http.get<T>(config.url, config.httpOptions);
+    return this.http.get<T>(config.url, {
+      ...config.httpOptions,
+      withCredentials: true,
+    });
     // .pipe(
     //   map((res) => {
     //     console.log(ret, res);
@@ -22,26 +25,34 @@ export class HttpService {
     // );
   }
 
-  post<T>(config: HttpReqOptions): Observable<HttpResponseData<T>> {
+  post<T, K>(config: HttpReqOptions<K>): Observable<HttpResponseData<T>> {
     const ret = new HttpResponseData<T>();
     ret.isOnline = window.navigator.onLine;
     return this.http
-      .post<T>(config.url, config.body, config.httpOptions)
+      .post<T>(config.url, config.body, {
+        ...config.httpOptions,
+        withCredentials: true,
+      })
       .pipe(map((res) => this.CreateSuccessResult<T>(ret, res)));
   }
 
-  put<T>(config: HttpReqOptions): Observable<HttpResponseData<T>> {
+  put<T, K>(config: HttpReqOptions<K>): Observable<HttpResponseData<T>> {
     const ret = new HttpResponseData<T>();
     ret.isOnline = window.navigator.onLine;
     return this.http
-      .put<T>(config.url, config.body, config.httpOptions)
+      .put<T>(config.url, config.body, {
+        ...config.httpOptions,
+        withCredentials: true,
+      })
       .pipe(map((res) => this.CreateSuccessResult<T>(ret, res)));
   }
 
-  delete<T>(config: HttpReqOptions): Observable<HttpResponseData<T>> {
+  delete<T>(
+    config: HttpReqOptions<undefined>
+  ): Observable<HttpResponseData<T>> {
     const ret = new HttpResponseData<T>();
     return this.http
-      .delete<T>(config.url, config.httpOptions)
+      .delete<T>(config.url, { ...config.httpOptions, withCredentials: true })
       .pipe(map((res) => this.CreateSuccessResult<T>(ret, res)));
   }
 

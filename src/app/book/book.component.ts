@@ -85,18 +85,18 @@ export class BookComponent implements OnInit {
     this.getBooksData();
   }
 
-  onClickPost(row: any): void {
+  onClickPost(row: IBookItem): void {
     this.postBooksDate([row]);
     this.initState();
     this.getBooksData();
   }
 
-  onClickPut(row: any): void {
-    const reqHttpOptions: HttpReqOptions = {
+  onClickPut(row: IBookItem[]): void {
+    const reqHttpOptions: HttpReqOptions<IBookItem[]> = {
       url: environment.apiurl + "/book",
-      body: [row],
+      body: row,
     };
-    this.httpService.put<number>(reqHttpOptions).subscribe(
+    this.httpService.put<number, IBookItem[]>(reqHttpOptions).subscribe(
       (response) => {
         console.log(response);
       },
@@ -108,7 +108,7 @@ export class BookComponent implements OnInit {
   }
 
   onClickDelete($event: any): void {
-    const reqHttpOptions: HttpReqOptions = {
+    const reqHttpOptions: HttpReqOptions<undefined> = {
       url: environment.apiurl + "/book",
       httpOptions: {
         params: {
@@ -184,7 +184,7 @@ export class BookComponent implements OnInit {
   }
 
   getBooksData(): void {
-    const reqHttpOptions: HttpReqOptions = {
+    const reqHttpOptions: HttpReqOptions<undefined> = {
       url: environment.apiurl + "/book",
       httpOptions: {
         params: this.bookItemSearchKey,
@@ -199,12 +199,12 @@ export class BookComponent implements OnInit {
     );
   }
 
-  postBooksDate(data: any): void {
-    const reqHttpOptions: HttpReqOptions = {
+  postBooksDate(data: IBookItem[]): void {
+    const reqHttpOptions: HttpReqOptions<IBookItem[]> = {
       url: environment.apiurl + "/book",
       body: data,
     };
-    this.httpService.post<number>(reqHttpOptions).subscribe(
+    this.httpService.post<number, IBookItem[]>(reqHttpOptions).subscribe(
       (response) => {
         console.log(response);
       },

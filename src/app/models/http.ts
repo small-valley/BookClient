@@ -1,8 +1,8 @@
-import { HttpHeaders } from '@angular/common/http';
+import { HttpHeaders } from "@angular/common/http";
 
-export interface HttpReqOptions {
+export interface HttpReqOptions<T> {
   url: string;
-  body?: any;
+  body?: T;
   param?: any;
   httpOptions?: {
     headers?: HttpHeaders;

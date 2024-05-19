@@ -16,12 +16,12 @@ export class ImportComponent {
 
   constructor(private httpService: HttpService) {}
 
-  protected postBooksDate(data: any): void {
-    const reqHttpOptions: HttpReqOptions = {
+  protected postBooksDate(data: IBookItem[]): void {
+    const reqHttpOptions: HttpReqOptions<IBookItem[]> = {
       url: environment.apiurl + "/book",
       body: data,
     };
-    this.httpService.post<number>(reqHttpOptions).subscribe(
+    this.httpService.post<number, IBookItem[]>(reqHttpOptions).subscribe(
       (response) => {
         console.log(response);
       },

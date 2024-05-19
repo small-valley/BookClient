@@ -26,7 +26,7 @@ export class AuthorComponent implements OnInit {
   dataSource: any;
 
   ngOnInit(): void {
-    //this.getAuthorsData();
+    this.getAuthorsData();
   }
 
   onClickGet($event: any): void {
@@ -34,7 +34,7 @@ export class AuthorComponent implements OnInit {
   }
 
   getAuthorsData(): void {
-    const reqHttpOptions: HttpReqOptions = {
+    const reqHttpOptions: HttpReqOptions<undefined> = {
       url: environment.apiurl + "/author",
     };
     this.httpService
