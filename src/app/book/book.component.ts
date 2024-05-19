@@ -7,6 +7,7 @@ import { HttpService } from "../services/http.service";
 import {
   BookItemSearchKey,
   IBookItem,
+  IBookItemPostModel,
   IBookItemSearchKey,
 } from "../stores/book.store";
 
@@ -81,30 +82,30 @@ export class BookComponent implements OnInit {
     this.getBooksData();
   }
 
-  onClickGet($event: any): void {
+  onClickGet(): void {
     this.getBooksData();
   }
 
-  onClickPost(row: IBookItem): void {
-    this.postBooksDate([row]);
-    this.initState();
-    this.getBooksData();
+  onClickPost(row: any): void {
+    const postData = {
+      ...row,
+      isRecommend: row.isRecommend == "true" ? true : false,
+    };
+    this.postBooksData([postData]);
   }
 
-  onClickPut(row: IBookItem[]): void {
-    const reqHttpOptions: HttpReqOptions<IBookItem[]> = {
+  onClickPut(row: IBookItem): void {
+    const reqHttpOptions: HttpReqOptions<IBookItem> = {
       url: environment.apiurl + "/book",
       body: row,
     };
-    this.httpService.put<number, IBookItem[]>(reqHttpOptions).subscribe(
+    this.httpService.put<number, IBookItem>(reqHttpOptions).subscribe(
       (response) => {
-        console.log(response);
+        this.initState();
+        this.getBooksData();
       },
       (error) => console.log(error)
     );
-    //window.alert(this.messageInfoList);
-    this.initState();
-    this.getBooksData();
   }
 
   onClickDelete($event: any): void {
@@ -118,13 +119,11 @@ export class BookComponent implements OnInit {
     };
     this.httpService.delete<number>(reqHttpOptions).subscribe(
       (response) => {
-        console.log(response);
+        this.initState();
+        this.getBooksData();
       },
       (error) => console.log(error)
     );
-    //window.alert(this.messageInfoList);
-    this.initState();
-    this.getBooksData();
   }
 
   /**
@@ -193,23 +192,24 @@ export class BookComponent implements OnInit {
     this.httpService.get<IBookItem[]>(reqHttpOptions).subscribe(
       (response) => {
         this.dataSource = new MatTableDataSource<IBookItem>(response ?? []);
-        console.log(response);
       },
       (error) => console.log(error)
     );
   }
 
-  postBooksDate(data: IBookItem[]): void {
-    const reqHttpOptions: HttpReqOptions<IBookItem[]> = {
+  postBooksData(data: IBookItemPostModel[]): void {
+    const reqHttpOptions: HttpReqOptions<IBookItemPostModel[]> = {
       url: environment.apiurl + "/book",
       body: data,
     };
-    this.httpService.post<number, IBookItem[]>(reqHttpOptions).subscribe(
-      (response) => {
-        console.log(response);
-      },
-      (error) => console.log(error)
-    );
-    //window.alert(this.param.body);
+    this.httpService
+      .post<number, IBookItemPostModel[]>(reqHttpOptions)
+      .subscribe({
+        next: (response) => {
+          this.initState();
+          this.getBooksData();
+        },
+        error: (error) => console.log(error),
+      });
   }
 }
