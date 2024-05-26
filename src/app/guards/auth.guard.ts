@@ -14,7 +14,7 @@ export class AuthGuard {
     return this.authService.isAuthenticated$.pipe(
       tap((isAuthenticated) => {
         if (!isAuthenticated) {
-          this.router.navigate(["/auth"]);
+          //this.router.navigate(["/auth"]);
         }
       })
     );
