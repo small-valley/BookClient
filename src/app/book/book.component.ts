@@ -96,7 +96,7 @@ export class BookComponent implements OnInit {
 
   onClickPut(row: IBookItem): void {
     const reqHttpOptions: HttpReqOptions<IBookItem> = {
-      url: environment.apiurl + "/book",
+      url: environment.apiUrl + "/book",
       body: row,
     };
     this.httpService.put<number, IBookItem>(reqHttpOptions).subscribe(
@@ -110,7 +110,7 @@ export class BookComponent implements OnInit {
 
   onClickDelete($event: any): void {
     const reqHttpOptions: HttpReqOptions<undefined> = {
-      url: environment.apiurl + "/book",
+      url: environment.apiUrl + "/book",
       httpOptions: {
         params: {
           id: $event.id,
@@ -184,7 +184,7 @@ export class BookComponent implements OnInit {
 
   getBooksData(): void {
     const reqHttpOptions: HttpReqOptions<undefined> = {
-      url: environment.apiurl + "/book",
+      url: environment.apiUrl + "/book",
       httpOptions: {
         params: this.bookItemSearchKey,
       },
@@ -199,7 +199,7 @@ export class BookComponent implements OnInit {
 
   postBooksData(data: IBookItemPostModel[]): void {
     const reqHttpOptions: HttpReqOptions<IBookItemPostModel[]> = {
-      url: environment.apiurl + "/book",
+      url: environment.apiUrl + "/book",
       body: data,
     };
     this.httpService

@@ -35,7 +35,7 @@ export class AuthorComponent implements OnInit {
 
   getAuthorsData(): void {
     const reqHttpOptions: HttpReqOptions<undefined> = {
-      url: environment.apiurl + "/author",
+      url: environment.apiUrl + "/author",
     };
     this.httpService
       .get<HttpResponseData<AuthorItem>>(reqHttpOptions)

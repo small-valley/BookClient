@@ -15,7 +15,7 @@ export class AuthService {
 
   checkInitialAuth() {
     const reqHttpOptions: HttpReqOptions<undefined> = {
-      url: environment.apiurl + "/auth/verify",
+      url: environment.apiUrl + "/auth/verify",
     };
     this.httpService.get<boolean>(reqHttpOptions).subscribe({
       next: (response) => {
@@ -29,7 +29,7 @@ export class AuthService {
 
   signInViaHostedUi(): void {
     const reqHttpOptions: HttpReqOptions<undefined> = {
-      url: environment.apiurl + "/auth/signin",
+      url: environment.apiUrlAuth + "/auth/signin",
     };
     this.httpService.get<string>(reqHttpOptions).subscribe({
       next: (signinUrl) => {

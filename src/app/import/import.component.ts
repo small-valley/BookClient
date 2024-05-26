@@ -18,7 +18,7 @@ export class ImportComponent {
 
   protected postBooksDate(data: IBookItem[]): void {
     const reqHttpOptions: HttpReqOptions<IBookItem[]> = {
-      url: environment.apiurl + "/book",
+      url: environment.apiUrl + "/book",
       body: data,
     };
     this.httpService.post<number, IBookItem[]>(reqHttpOptions).subscribe(
