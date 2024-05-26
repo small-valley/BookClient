@@ -15,6 +15,7 @@ export class HttpService {
     // ret.isOnline = window.navigator.onLine;
     return this.http.get<T>(config.url, {
       ...config.httpOptions,
+      headers: { Authorization: `Bearer ${this.getAccessToken()}` },
       withCredentials: true,
     });
     // .pipe(
@@ -31,6 +32,7 @@ export class HttpService {
     return this.http
       .post<T>(config.url, config.body, {
         ...config.httpOptions,
+        headers: { Authorization: `Bearer ${this.getAccessToken()}` },
         withCredentials: true,
       })
       .pipe(map((res) => this.CreateSuccessResult<T>(ret, res)));
@@ -42,6 +44,7 @@ export class HttpService {
     return this.http
       .put<T>(config.url, config.body, {
         ...config.httpOptions,
+        headers: { Authorization: `Bearer ${this.getAccessToken()}` },
         withCredentials: true,
       })
       .pipe(map((res) => this.CreateSuccessResult<T>(ret, res)));
@@ -52,7 +55,11 @@ export class HttpService {
   ): Observable<HttpResponseData<T>> {
     const ret = new HttpResponseData<T>();
     return this.http
-      .delete<T>(config.url, { ...config.httpOptions, withCredentials: true })
+      .delete<T>(config.url, {
+        ...config.httpOptions,
+        headers: { Authorization: `Bearer ${this.getAccessToken()}` },
+        withCredentials: true,
+      })
       .pipe(map((res) => this.CreateSuccessResult<T>(ret, res)));
   }
 
@@ -61,5 +68,21 @@ export class HttpService {
     res: any
   ): HttpResponseData<T> {
     return res;
+  }
+
+  private getAccessToken(): string {
+    const nameEQ = "access_token" + "=";
+    const ca = document.cookie.split(";");
+    console.log(document.cookie, ca);
+    for (let i = 0; i < ca.length; i++) {
+      let c = ca[i];
+      while (c.charAt(0) === " ") c = c.substring(1, c.length);
+      if (c.indexOf(nameEQ) === 0) {
+        const token = c.substring(nameEQ.length, c.length);
+        console.log(token);
+        return c.substring(nameEQ.length, c.length);
+      }
+    }
+    return "";
   }
 }
