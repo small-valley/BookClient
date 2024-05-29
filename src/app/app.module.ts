@@ -2,6 +2,8 @@ import { NgModule } from "@angular/core";
 
 import { HttpClientModule } from "@angular/common/http";
 import { FormsModule } from "@angular/forms";
+import { provideNativeDateAdapter } from "@angular/material/core";
+import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatExpansionModule } from "@angular/material/expansion";
 import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
@@ -49,9 +51,10 @@ import { SearchBarComponent } from "./parts/search-bar/search-bar.component";
     MatExpansionModule,
     MatSidenavModule,
     MatPaginatorModule,
+    MatDatepickerModule,
     BrowserAnimationsModule,
   ],
-  providers: [],
+  providers: [provideNativeDateAdapter()],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

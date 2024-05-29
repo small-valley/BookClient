@@ -25,8 +25,8 @@ export interface IBookItemPostModel {
 }
 
 export interface IBookItemSearchKey {
-  from: string | null;
-  to: string | null;
+  from: string | undefined;
+  to: string | undefined;
   title: string;
   author: string;
   publisher: string;
@@ -37,8 +37,8 @@ export interface IBookItemSearchKey {
 }
 
 export class BookItemSearchKey implements IBookItemSearchKey {
-  from: string | null = "";
-  to: string | null = "";
+  from: string | undefined = "";
+  to: string | undefined = "";
   title: string = "";
   author: string = "";
   publisher: string = "";

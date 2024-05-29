@@ -16,7 +16,7 @@ export class SearchBarComponent {
     publisher: "",
     class: "",
     publishYear: "",
-    isRecommend: false,
+    isRecommend: undefined,
   };
   protected searchKeys = Object.keys(this.searchKey);
   protected panelDescription = "";
@@ -26,8 +26,8 @@ export class SearchBarComponent {
 
   protected onSearchClick(): void {
     const values: IBookItemSearchKey = {
-      from: this.searchKey.from,
-      to: this.searchKey.to,
+      from: this.formatDate(this.searchKey.from),
+      to: this.formatDate(this.searchKey.to),
       title: this.searchKey.title,
       author: this.searchKey.author,
       publisher: this.searchKey.publisher,
@@ -44,10 +44,25 @@ export class SearchBarComponent {
 
     Object.entries(this.searchKey).forEach(([key, value]) => {
       if (value) {
+        if (key === "from" || key === "to") {
+          value = this.formatDate(value as string);
+        }
         description += `${key}: ${value} `;
       }
     });
 
     this.panelDescription = description.trim();
+  }
+
+  private formatDate(date?: string): string {
+    const options: Intl.DateTimeFormatOptions = {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    };
+    if (!date) {
+      return "";
+    }
+    return new Date(date).toLocaleDateString("en-CA", options);
   }
 }

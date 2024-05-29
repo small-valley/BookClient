@@ -6,11 +6,31 @@
         {{ panelDescription }}
       </mat-panel-description>
     </mat-expansion-panel-header>
-    <ng-container *ngFor="let key of searchKeys">
-      <mat-form-field>
-        <input matInput [placeholder]="key" [(ngModel)]="searchKey[key]" />
-      </mat-form-field>
-    </ng-container>
+    <div class="input-container">
+      <ng-container *ngFor="let key of searchKeys">
+        <ng-container *ngIf="key === 'from' || key === 'to'; else inputField">
+          <mat-form-field>
+            <mat-label>{{ key }}</mat-label>
+            <input
+              matInput
+              [matDatepicker]="picker"
+              [(ngModel)]="searchKey[key]"
+            />
+            <mat-datepicker-toggle
+              matIconSuffix
+              [for]="picker"
+            ></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+        </ng-container>
+        <ng-template #inputField>
+          <mat-form-field>
+            <mat-label>{{ key }}</mat-label>
+            <input matInput [placeholder]="key" [(ngModel)]="searchKey[key]" />
+          </mat-form-field>
+        </ng-template>
+      </ng-container>
+    </div>
     <button mat-raised-button (click)="onSearchClick()">
       <mat-icon>search</mat-icon>
     </button>

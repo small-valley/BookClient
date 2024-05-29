@@ -1,3 +1,5 @@
-mat-form-field {
-  margin: 0.5rem;
+.input-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
 }
