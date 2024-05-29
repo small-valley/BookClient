@@ -87,8 +87,9 @@ export class BookComponent implements OnInit {
   }
 
   onClickPost(row: any): void {
-    const postData = {
+    const postData: IBookItemPostModel = {
       ...row,
+      date: this.formatDate(row.date),
       isRecommend: row.isRecommend == "true" ? true : false,
     };
     this.postBooksData([postData]);
@@ -211,5 +212,17 @@ export class BookComponent implements OnInit {
         },
         error: (error) => console.log(error),
       });
+  }
+
+  private formatDate(date?: string): string {
+    const options: Intl.DateTimeFormatOptions = {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    };
+    if (!date) {
+      return "";
+    }
+    return new Date(date).toLocaleDateString("en-CA", options);
   }
 }

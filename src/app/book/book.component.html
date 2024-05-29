@@ -21,7 +21,31 @@
             </button>
           </ng-container>
           <ng-container *ngIf="column.columnDef !== 'delete'">
-            <input matInput [(ngModel)]="row[column.columnDef]" />
+            <ng-container *ngIf="column.columnDef === 'date'; else inputField">
+              <mat-form-field>
+                <mat-label>{{ column.columnDef }}</mat-label>
+                <input
+                  matInput
+                  [matDatepicker]="picker"
+                  [(ngModel)]="row[column.columnDef]"
+                />
+                <mat-datepicker-toggle
+                  matIconSuffix
+                  [for]="picker"
+                ></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
+            </ng-container>
+            <ng-template #inputField>
+              <!-- <mat-form-field> -->
+              <!-- <mat-label>{{ column.columnDef }}</mat-label> -->
+              <input
+                matInput
+                [placeholder]="column.columnDef"
+                [(ngModel)]="row[column.columnDef]"
+              />
+              <!-- </mat-form-field> -->
+            </ng-template>
           </ng-container>
         </ng-container>
         <ng-container *ngIf="column.columnDef === 'edit'" class="column-button">

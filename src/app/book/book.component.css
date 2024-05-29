@@ -8,6 +8,10 @@ td input {
   box-sizing: border-box;
 }
 
+mat-form-field {
+  padding-top: 1rem;
+}
+
 .column-button td.mat-cell {
   width: 50px;
 }
